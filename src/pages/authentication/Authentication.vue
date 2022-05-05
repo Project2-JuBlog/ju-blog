@@ -1,8 +1,12 @@
 <template>
-  <section class="row">
-    <div class="col-12 col-md-6"><LeftSideAuth /></div>
-    <div class="col-12 col-md-6">
-      <router-view></router-view>
+  <section class="home-page">
+    <div class="row g-0">
+      <div class="col-12 col-md-6">
+        <LeftSideAuth />
+      </div>
+      <div class="col-12 col-md-6">
+        <router-view></router-view>
+      </div>
     </div>
   </section>
 </template>
@@ -14,3 +18,6 @@ export default defineComponent({
   components: { LeftSideAuth },
 });
 </script>
+<style lang="scss">
+@import "@/assets/sass/pages/authentication";
+</style>

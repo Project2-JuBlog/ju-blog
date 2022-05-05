@@ -17,8 +17,14 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "",
-        name: "login",
+        name: "rightnav",
         component: () => import("@/components/authentication/RightSideAuth.vue"),
+
+      },
+      {
+        path: "login",
+        name: "loginpage",
+        component: () => import("@/components/authentication/LoginAuth.vue"),
 
       },
       {
