@@ -1,3 +1,3 @@
 <template>
-  <section>this is login a fpage</section>
+  <section>this is login a fpages</section>
 </template>
