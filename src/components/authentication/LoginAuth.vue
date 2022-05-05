@@ -1,3 +1,3 @@
 <template>
-  <section>this is login page</section>
+  <section>this is login pages</section>
 </template>
