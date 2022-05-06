@@ -1,7 +1,7 @@
 <template>
   <div class="side-login">
     <section class="center-section">
-      <div class="pb-5 pt-5 text-center">
+      <div class="my-md-5 text-center">
         <h2 class="header-primary">
           Welcome To
           <p>JuBlog</p>

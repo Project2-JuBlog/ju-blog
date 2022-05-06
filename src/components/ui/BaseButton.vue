@@ -1,8 +1,13 @@
 <template>
-  <button v-if="!link" class="button-base">
+  <button v-if="!link" class="button-base" :class="!small ? '' : 'small-btn'">
     <slot></slot>
   </button>
-  <router-link v-else :to="to" class="button-base">
+  <router-link
+    v-else
+    :to="to"
+    class="button-base"
+    :class="!small ? '' : 'small-btn'"
+  >
     <slot></slot>
   </router-link>
 </template>
@@ -16,6 +21,11 @@ export default defineComponent({
       required: false,
       default: false,
     },
+    small: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     to: {
       type: Object || String,
       required: false,
@@ -24,3 +34,6 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped lang="scss">
+@import "@/assets/sass/components/button";
+</style>
