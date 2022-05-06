@@ -27,17 +27,17 @@
         <div class="col">
           <select class="form-select" aria-label="Default select example">
             <option value="">Colleage</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="1">KASIT</option>
           </select>
         </div>
         <div class="col">
           <select class="form-select" aria-label="Default select example">
             <option value="">Major</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="1">CIS</option>
+            <option value="2">CS</option>
+            <option value="3">BIT</option>
+            <option value="3">DS</option>
+            <option value="3">AI</option>
           </select>
         </div>
       </div>

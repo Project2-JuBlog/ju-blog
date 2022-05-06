@@ -1,7 +1,7 @@
 <template>
   <BaseAuth>
     <template v-slot:header> Log In </template>
-    <form class="form-auth d-flex flex-column gap-5 pt-5">
+    <form class="form-auth d-flex flex-column gap-md-5 gap-3 pt-md-5">
       <input class="form-control" type="email" placeholder="Email" />
       <input
         class="form-control"
