@@ -1,0 +1,1 @@
+<template>feed view</template>

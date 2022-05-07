@@ -1,0 +1,1 @@
+<template>freinds view</template>

@@ -4,7 +4,7 @@ export default {
         user: {
             name: "Rawan Abdullah",
             email: "roa0183927@ju.edu.jo",
-            image: "@/assets/img/rawanimage.png",
+            image: "rawanimage.png",
 
         }
     },

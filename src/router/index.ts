@@ -50,11 +50,47 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/home",
     name: "Home",
-
+    redirect: "/home/feed",
     component: () =>
       import("@/pages/student/Home.vue"),
-    children: []
+    children: [{
+      path: "feed",
+      name: "Feed",
+      component: () =>
+        import("@/components/layout/Feed.vue"),
+    },
+    {
+      path: "friends",
+      name: "Friends",
+      component: () =>
+        import("@/components/layout/Friends.vue"),
+    },
+    {
+      path: "events",
+      name: "Events",
+      component: () =>
+        import("@/components/layout/Events.vue"),
+    },
+    {
+      path: "saved",
+      name: "Saved",
+      component: () =>
+        import("@/components/layout/Saved.vue"),
+    },
+    {
+      path: "private-chat",
+      name: "PrivateChat",
+      component: () =>
+        import("@/components/layout/PrivateChat.vue"),
+    },
+
+    ]
+  }, {
+    path: "/group/:id",
+    name: "group",
+    component: () => import("@/pages/group/Group.vue")
   }
+
 
 ];
 

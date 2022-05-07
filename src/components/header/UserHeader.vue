@@ -1,0 +1,35 @@
+<template>
+    
+      <BaseCard>
+        <ul class="list-navbar">
+          <li class="list-feed">
+            <router-link :to="{ name: 'Feed' }" active-class="active-list">
+              <!-- <img src="@/assets/img/feed-fill.svg" /> -->
+              Feed</router-link
+            >
+          </li>
+          <li class="list-friend">
+            <router-link :to="{ name: 'Friends' }" active-class="active-list"
+              >Friends</router-link
+            >
+          </li>
+          <li class="list-event">
+            <router-link :to="{ name: 'Events' }" active-class="active-list"
+              >Events</router-link
+            >
+          </li>
+          <li class="list-saved">
+            <router-link :to="{ name: 'Saved' }" active-class="active-list"
+              >Saved</router-link
+            >
+          </li>
+          <li class="list-chat">
+            <router-link
+              :to="{ name: 'PrivateChat' }"
+              active-class="active-list"
+              >Private Chat</router-link
+            >
+          </li>
+        </ul>
+      </BaseCard>
+</template>

@@ -1,0 +1,1 @@
+<template>chat view</template>
