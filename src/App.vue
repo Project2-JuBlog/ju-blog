@@ -5,6 +5,7 @@
 import { defineComponent } from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
+
 export default defineComponent({});
 </script>
 <style lang="scss">

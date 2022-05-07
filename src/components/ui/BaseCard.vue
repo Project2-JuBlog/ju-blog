@@ -16,6 +16,7 @@ export default defineComponent({});
   background: #fbfcfc;
   border: 2px solid #c6c7c7;
   border-radius: 30px;
+  box-sizing: border-box;
   .list-navbar {
     list-style: none;
     padding-block: 10px;
