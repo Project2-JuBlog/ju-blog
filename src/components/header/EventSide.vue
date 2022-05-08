@@ -14,7 +14,7 @@
           </li>
         </ul>
         <div v-else>
-          <p class="text-center">No Event to do</p>
+          <p class="text-center">No Events to do</p>
         </div>
       </div>
     </section>
