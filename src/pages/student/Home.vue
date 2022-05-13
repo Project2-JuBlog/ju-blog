@@ -10,13 +10,33 @@
           <router-view></router-view>
         </section>
       </div>
-      <div class="col-12 col-lg-6 col-xl-3">
+      <div class="col-12 col-lg-6 col-xl-3" v-if="!inChat && !inEvent">
         <section class="px-md-5 mx-md-4 px-2 mx-2">
           <EventSide></EventSide>
           <ImportantLink></ImportantLink>
         </section>
       </div>
+
+      <div class="col-12 col-lg-6 col-xl-3" v-if="inEvent">
+        <section class="px-md-5 mx-md-4 px-2 mx-2">
+          <base-button class="mb-5 mx-3" @click="openEvent = !openEvent"
+            >Add Event</base-button
+          >
+          <br />
+          <ImportantLink></ImportantLink>
+        </section>
+      </div>
     </div>
+
+    <MDBModal
+      id="exampleModal"
+      tabindex="-1"
+      labelledby="exampleModalLabel"
+      v-model="openEvent"
+      centered
+    >
+      <AddEvent @close="openEvent = false" />
+    </MDBModal>
   </section>
 </template>
 <script lang="ts">
@@ -25,7 +45,30 @@ import Navigation from "@/components/header/Navigation.vue";
 import SideNav from "@/components/header/SideNav.vue";
 import ImportantLink from "@/components/header/ImportantLink.vue";
 import EventSide from "@/components/header/EventSide.vue";
+
+import AddEvent from "@/components/modal/AddEvent.vue";
 export default defineComponent({
-  components: { Navigation, SideNav, ImportantLink, EventSide },
+  data() {
+    return {
+      openEvent: false,
+    };
+  },
+  components: { Navigation, SideNav, ImportantLink, AddEvent, EventSide },
+  computed: {
+    inChat() {
+      if (this.$route.name == "PrivateChat") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    inEvent() {
+      if (this.$route.name == "Events") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
 });
 </script>
