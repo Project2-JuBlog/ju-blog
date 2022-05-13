@@ -1,5 +1,5 @@
 <template>
-  <section class="px-5 mx-4">
+  <section class="px-md-5 mx-md-4 px-2 mx-2">
     <div>
       <NameSection></NameSection>
     </div>

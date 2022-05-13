@@ -6,10 +6,12 @@
         <SideNav />
       </div>
       <div class="col-12 col-lg-6">
-        <router-view></router-view>
+        <section class="px-2 px-md-0 mx-2 mx-md-0">
+          <router-view></router-view>
+        </section>
       </div>
       <div class="col-12 col-lg-6 col-xl-3">
-        <section class="px-5 mx-4">
+        <section class="px-md-5 mx-md-4 px-2 mx-2">
           <EventSide></EventSide>
           <ImportantLink></ImportantLink>
         </section>
