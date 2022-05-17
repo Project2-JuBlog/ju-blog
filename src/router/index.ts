@@ -78,6 +78,12 @@ const routes: Array<RouteRecordRaw> = [
         import("@/components/layout/Saved.vue"),
     },
     {
+      path: "profile",
+      name: "Profile",
+      component: () =>
+        import("@/components/layout/Profile.vue"),
+    },
+    {
       path: "private-chat",
       name: "PrivateChat",
       component: () =>
