@@ -8,19 +8,23 @@
           height="150"
         />
       </div>
-      <div class="col-8 profile-header-detail">
+      <div class="col-7 profile-header-detail">
         <h1 class="mt-5 mb-4">{{ userData.name }}</h1>
         <h4>KASIT - CIS</h4>
       </div>
-      <div class="col-1 d-flex align-items-end">
+      <div class="col-2 d-flex align-items-end">
+        <div v-if="user.role == 'company'">
+          <BaseButton small @click="isRecommand = !isRecommand"
+            >Recommended</BaseButton
+          >
+        </div>
         <img
+          v-else
           src="@/assets/img/edit.svg"
           @click="isEdit = !isEdit"
           class="img-edit"
           height="20"
         />
-
-        
       </div>
     </section>
     <div class="profile-content mt-5">
@@ -48,9 +52,18 @@
     labelledby="exampleModalLabel"
     v-model="isEdit"
     centered
-    size="md"
   >
     <EditProfile @close="isEdit = false" />
+  </MDBModal>
+
+  <MDBModal
+    id="exampleModal"
+    tabindex="-1"
+    labelledby="exampleModalLabel"
+    v-model="isRecommand"
+    centered
+  >
+    <Recommand @close="isRecommand = false" />
   </MDBModal>
 </template>
 
@@ -58,15 +71,18 @@
 import EditProfile from "@/components/modal/EditProfile.vue";
 import ProfileInfo from "@/components/base/ProfileInfo.vue";
 import ProfileRecom from "@/components/base/ProfileRecom.vue";
+
+import Recommand from "@/components/modal/Recommand.vue";
 import { defineComponent } from "vue";
 import { mapGetters } from "vuex";
 
 export default defineComponent({
-  components: { EditProfile, ProfileInfo, ProfileRecom },
+  components: { EditProfile, ProfileInfo, ProfileRecom, Recommand },
   data() {
     return {
       isEdit: false,
       activeTabId3: "info",
+      isRecommand: false,
     };
   },
   computed: {

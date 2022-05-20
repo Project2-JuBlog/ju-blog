@@ -88,6 +88,12 @@ const routes: Array<RouteRecordRaw> = [
       component: () =>
         import("@/components/layout/HomeCompany.vue"),
     },
+    {
+      path: "search/:searchQuery",
+      name: "searchPage",
+      component: () =>
+        import("@/components/layout/SearchResult.vue"),
+    },
 
     ]
   }, {
