@@ -22,6 +22,11 @@
           <base-button class="mb-5 mx-3" @click="openEvent = !openEvent"
             >Add Event</base-button
           >
+          <base-button
+            class="mb-5 mx-3"
+            @click="openGeneralEvent = !openGeneralEvent"
+            >Add General Event</base-button
+          >
           <br />
           <ImportantLink></ImportantLink>
         </section>
@@ -37,6 +42,16 @@
     >
       <AddEvent @close="openEvent = false" />
     </MDBModal>
+    <MDBModal
+      id="exampleModal"
+      tabindex="-1"
+      labelledby="exampleModalLabel"
+      v-model="openGeneralEvent"
+      centered
+      size="lg"
+    >
+      <AddGeneralEvent @close="openGeneralEvent = false" />
+    </MDBModal>
   </section>
 </template>
 <script lang="ts">
@@ -47,13 +62,22 @@ import ImportantLink from "@/components/header/ImportantLink.vue";
 import EventSide from "@/components/header/EventSide.vue";
 
 import AddEvent from "@/components/modal/AddEvent.vue";
+import AddGeneralEvent from "@/components/modal/AddGeneralEvent.vue";
 export default defineComponent({
   data() {
     return {
       openEvent: false,
+      openGeneralEvent: false,
     };
   },
-  components: { Navigation, SideNav, ImportantLink, AddEvent, EventSide },
+  components: {
+    Navigation,
+    SideNav,
+    ImportantLink,
+    AddEvent,
+    EventSide,
+    AddGeneralEvent,
+  },
   computed: {
     inChat() {
       if (this.$route.name == "PrivateChat") {

@@ -16,7 +16,9 @@
           <div>
             <p class="p-0 m-0 fw-bold">{{ userData.name }}</p>
             <p class="p-0 m-0">
-              <span class="post-group-name me-2">KASIT</span>
+              <span class="post-group-name me-2"
+                ><span v-if="id == 2">CIS</span><span v-else>KASIT</span></span
+              >
               <span class="post-date">20/5/2022</span>
             </p>
           </div>
@@ -143,6 +145,7 @@ export default defineComponent({
       isSaved: false,
       editPost: false,
       isDelete: false,
+      idNo: 0 as any,
     };
   },
   components: { EditPost, DeletePost, Comments },
@@ -173,6 +176,13 @@ export default defineComponent({
     userImage(): any {
       return this.user.image;
     },
+    id(): any {
+      this.idNo = this.$route.params.id;
+      return this.idNo;
+    },
+  },
+  created() {
+    this.idNo = this.$route.params.id;
   },
 });
 </script>

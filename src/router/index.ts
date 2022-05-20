@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -19,12 +18,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/components/authentication/RightSideAuth.vue"),
 
       },
-      {
-        path: "login",
-        name: "loginpage",
-        component: () => import("@/components/authentication/LoginAuth.vue"),
 
-      },
       {
         path: "sign-up",
         name: "signup",
@@ -50,7 +44,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/home",
     name: "Home",
-    redirect: "/home/feed",
     component: () =>
       import("@/pages/student/Home.vue"),
     children: [{
@@ -89,12 +82,33 @@ const routes: Array<RouteRecordRaw> = [
       component: () =>
         import("@/components/layout/PrivateChat.vue"),
     },
+    {
+      path: "home-company",
+      name: "HomeCompany",
+      component: () =>
+        import("@/components/layout/HomeCompany.vue"),
+    },
 
     ]
   }, {
-    path: "/group/:id",
+    path: "/group",
     name: "group",
-    component: () => import("@/pages/group/Group.vue")
+    component: () => import("@/pages/group/Group.vue"),
+
+    children: [
+      {
+        path: ":id",
+        name: "general",
+        component: () => import("@/pages/group/GroupHome.vue"),
+
+      },
+      {
+        path: ":id/event/:Eventid",
+        name: "eventPage",
+        component: () => import('@/components/layout/EventPage.vue'),
+
+      }
+    ]
   }
 
 

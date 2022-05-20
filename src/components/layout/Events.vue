@@ -30,9 +30,9 @@ export default defineComponent({
           {
             title: "Learn React section 1 and Section 2",
             backgroundColor: "#229f94",
-            date: "2022-05-11",
+            date: "2022-05-18",
           },
-          { title: "event 2", date: "2022-05-13" },
+          { title: "event 2", date: "2022-05-21" },
         ],
       };
     },

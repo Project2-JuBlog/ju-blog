@@ -15,7 +15,7 @@
       <input
         class="form-control"
         type="email"
-        placeholder="Example@ju.edu.jo"
+        placeholder="Example@example.com"
       />
       <input class="form-control" type="tel" placeholder="Phone Number" />
       <input

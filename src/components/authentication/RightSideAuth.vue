@@ -1,18 +1,36 @@
 <template>
   <div class="side-login">
     <section class="center-section">
-      <div class="my-md-5 text-center">
+      <div class="pb-4 text-center">
         <h2 class="header-primary">
           Welcome To
           <p>JuBlog</p>
         </h2>
       </div>
-      <div
-        class="d-flex flex-column justify-content-center align-items-center gap-3"
-      >
-        <BaseButton :to="{ name: 'loginpage' }" link>Log In</BaseButton>
-        <BaseButton :to="{ name: 'signup' }" link>Sign Up</BaseButton>
+      <div>
+        <LoginAuth />
+        <!-- <BaseButton :to="{ name: 'loginpage' }" link>Log In</BaseButton> -->
+        <div
+          class="text-center pt-5 cursor"
+          @click="$router.push({ name: 'signup' })"
+        >
+          <p>Don`t Have Account ? Sign Up</p>
+        </div>
       </div>
     </section>
   </div>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue";
+import LoginAuth from "./LoginAuth.vue";
+export default defineComponent({
+  components: {
+    LoginAuth,
+  },
+});
+</script>
+<style scoped>
+.cursor {
+  cursor: pointer;
+}
+</style>

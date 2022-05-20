@@ -19,6 +19,8 @@
           class="img-edit"
           height="20"
         />
+
+        
       </div>
     </section>
     <div class="profile-content mt-5">
@@ -46,7 +48,7 @@
     labelledby="exampleModalLabel"
     v-model="isEdit"
     centered
-    size="lg"
+    size="md"
   >
     <EditProfile @close="isEdit = false" />
   </MDBModal>

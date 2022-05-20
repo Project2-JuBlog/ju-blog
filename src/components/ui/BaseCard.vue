@@ -160,6 +160,30 @@ export default defineComponent({});
         }
       }
     }
+
+    .list-home {
+      a {
+        &::before {
+          content: "";
+          background-image: url("@/assets/img/home.svg");
+          background-position: center;
+          background-size: cover;
+          width: 20px;
+          height: 20px;
+          margin-right: 9px;
+        }
+      }
+    }
+    .list-home {
+      .active-list {
+        color: $color-button !important;
+        border-left: 3px solid $color-button !important;
+        &::before {
+          content: "";
+          background-image: url("@/assets/img/home-filled.svg") !important;
+        }
+      }
+    }
   }
 }
 </style>

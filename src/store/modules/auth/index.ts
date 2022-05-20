@@ -5,7 +5,8 @@ export default {
             name: "Rawan Abdullah",
             email: "roa0183927@ju.edu.jo",
             image: "rawanimage.png",
-            
+            role: "company"
+
 
         }
     },

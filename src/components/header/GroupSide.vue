@@ -4,7 +4,7 @@
     <ul class="list-navbar">
       <li v-for="group in groups" :key="group.id">
         <router-link
-          :to="{ name: 'group', params: { id: group.id } }"
+          :to="{ name: 'general', params: { id: group.id } }"
           active-class="active-list"
         >
           {{ group.name }}</router-link
