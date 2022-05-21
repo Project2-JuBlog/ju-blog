@@ -10,9 +10,12 @@
           Feed</router-link
         >
       </li>
-      <li class="list-home" v-if="user.role == 'company'">
+      <li
+        class="list-home"
+        v-if="user.role == 'company' || user.role == 'doctor'"
+      >
         <router-link :to="{ name: 'HomeCompany' }" active-class="active-list"
-          >Home</router-link
+          >Search</router-link
         >
       </li>
       <li class="list-friend">

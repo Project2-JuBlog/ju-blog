@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import store from "../store/index";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -44,6 +46,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/home",
     name: "Home",
+    meta: { requiresAuth: true },
+
     component: () =>
       import("@/pages/student/Home.vue"),
     children: [{
@@ -98,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
     ]
   }, {
     path: "/group",
-    name: "group",
+    name: "group", meta: { requiresAuth: true },
     component: () => import("@/pages/group/Group.vue"),
 
     children: [
@@ -124,5 +128,17 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters['Auth/isAuthenticated']) {
+      next()
+      return
+    }
+    next("/")
+  } else {
+    next()
+  }
+})
 
 export default router;

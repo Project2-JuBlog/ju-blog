@@ -1,29 +1,33 @@
 <template>
-  <span class="px-5"> General Events</span>
+  <section v-if="user.role !== 'company'">
+    <span class="px-5"> General Events</span>
 
-  <BaseCard>
-    <section class="py-4">
-      <div class="py-2">
-        <ul v-if="events.length > 0">
-          <li v-for="event in events" :key="event.name">
+    <BaseCard>
+      <section class="py-2">
+        <div>
+          <ul v-if="events.length > 0" class="list-navbar">
             <router-link
-              :to="{ name: 'eventPage', params: { Eventid: event.id, id: id } }"
-            >
-              {{ event.name }} in {{ event.date }}
+              v-for="event in events"
+              :key="event.name"
+              :to="{
+                name: 'eventPage',
+                params: { Eventid: event.id, id: id },
+              }"
+              ><li>{{ event.name }} in {{ event.date }}</li>
             </router-link>
-          </li>
-        </ul>
-        <div v-else>
-          <p class="text-center">No Events to See</p>
+          </ul>
+          <div v-else>
+            <p class="text-center">No Events to See</p>
+          </div>
         </div>
-      </div>
-    </section>
-  </BaseCard>
+      </section>
+    </BaseCard>
+  </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import moment from "moment";
+import { mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -42,6 +46,9 @@ export default defineComponent({
     eventId(): any {
       return this.$route.params.Eventid;
     },
+    ...mapGetters({
+      user: "Auth/user",
+    }),
   },
 });
 </script>

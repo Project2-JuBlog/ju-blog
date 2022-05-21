@@ -20,11 +20,15 @@ export default defineComponent({});
   .list-navbar {
     list-style: none;
     padding-block: 10px;
+    a {
+      text-decoration: none;
+    }
     li,
-    li a {
+    li a,
+    a li {
       color: $gray;
       text-decoration: none;
-      font-size: 20px;
+      font-size: 18px;
       padding-inline: 14px;
       margin-block: 10px;
       height: 30px;
@@ -33,7 +37,9 @@ export default defineComponent({});
       align-content: center;
       align-items: center;
       cursor: pointer;
+      line-height: 1.3rem;
     }
+    li a:hover,
     li:hover {
       color: $color-button;
     }
@@ -165,7 +171,7 @@ export default defineComponent({});
       a {
         &::before {
           content: "";
-          background-image: url("@/assets/img/home.svg");
+          background-image: url("@/assets/img/search-.svg");
           background-position: center;
           background-size: cover;
           width: 20px;
@@ -180,7 +186,7 @@ export default defineComponent({});
         border-left: 3px solid $color-button !important;
         &::before {
           content: "";
-          background-image: url("@/assets/img/home-filled.svg") !important;
+          background-image: url("@/assets/img/search- filled.svg") !important;
         }
       }
     }

@@ -18,7 +18,8 @@
               class="form-control"
             />
           </div>
-          <div>
+
+          <div @click.prevent="logoutHandler" class="cursor">
             <img src="@/assets/img/log-out.svg" width="30" height="30" />
           </div>
         </div>
@@ -40,6 +41,24 @@
     </div>
   </nav>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapActions } from "vuex";
+
+export default defineComponent({
+  methods: {
+    ...mapActions({
+      logOut: "Auth/logOut",
+    }),
+    logoutHandler() {
+      console.log("hoooo");
+      this.logOut();
+    },
+  },
+});
+</script>
+
 <style scoped lang="scss">
 .header {
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
@@ -62,6 +81,9 @@
         box-shadow: none;
       }
     }
+  }
+  .cursor {
+    cursor: pointer;
   }
 }
 </style>

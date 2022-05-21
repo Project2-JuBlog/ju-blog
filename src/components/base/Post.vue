@@ -16,9 +16,7 @@
           <div>
             <p class="p-0 m-0 fw-bold">{{ userData.name }}</p>
             <p class="p-0 m-0">
-              <span class="post-group-name me-2"
-                ><span v-if="id == 2">CIS</span><span v-else>KASIT</span></span
-              >
+              <span class="post-group-name me-2">{{ userData.status }}</span>
               <span class="post-date">20/5/2022</span>
             </p>
           </div>

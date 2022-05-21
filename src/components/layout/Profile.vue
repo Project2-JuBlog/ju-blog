@@ -10,10 +10,17 @@
       </div>
       <div class="col-7 profile-header-detail">
         <h1 class="mt-5 mb-4">{{ userData.name }}</h1>
-        <h4>KASIT - CIS</h4>
+        <h4>{{ userData.collage }} -{{ userData.major }}</h4>
+        <h4>
+          {{ userData.status }} -
+          <span v-if="userData.status !== 'student'"
+            >from {{ userData.gradYear }}</span
+          >
+          <span v-else>{{ userData.acadYear }} Year</span>
+        </h4>
       </div>
       <div class="col-2 d-flex align-items-end">
-        <div v-if="user.role == 'company'">
+        <div v-if="user.role == 'doctor'">
           <BaseButton small @click="isRecommand = !isRecommand"
             >Recommended</BaseButton
           >

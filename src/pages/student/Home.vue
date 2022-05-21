@@ -23,6 +23,7 @@
             >Add Event</base-button
           >
           <base-button
+            v-if="user.role == 'company'"
             class="mb-5 mx-3"
             @click="openGeneralEvent = !openGeneralEvent"
             >Add General Event</base-button
@@ -62,6 +63,8 @@ import ImportantLink from "@/components/header/ImportantLink.vue";
 import EventSide from "@/components/header/EventSide.vue";
 
 import AddEvent from "@/components/modal/AddEvent.vue";
+import { mapGetters } from "vuex";
+
 import AddGeneralEvent from "@/components/modal/AddGeneralEvent.vue";
 export default defineComponent({
   data() {
@@ -93,6 +96,9 @@ export default defineComponent({
         return false;
       }
     },
+    ...mapGetters({
+      user: "Auth/user",
+    }),
   },
 });
 </script>

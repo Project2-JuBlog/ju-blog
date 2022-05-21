@@ -1,12 +1,12 @@
-// import axios from "axios";
+import axios from "axios";
 // import store from "@/store";
 // import { computed } from "vue";
 
-// const axiosInstance = axios.create({
-//   //  baseURL: "https://development.himam.com/api/",
-//   baseURL: "https://services.himam.com/api/",
-//   //"http://158.101.229.40:3000/api/",
-// });
+const axiosInstance = axios.create({
+  //  baseURL: "https://development.himam.com/api/",
+  baseURL: "https://jublog-e753d-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  //"http://158.101.229.40:3000/api/",
+});
 // const accessToken = computed(() => {
 //   return store.getters["auth/accessToken"];
 // });
@@ -48,4 +48,4 @@
 //   }
 // );
 
-// export default axiosInstance;
+export default axiosInstance;
