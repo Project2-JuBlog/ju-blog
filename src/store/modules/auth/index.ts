@@ -64,7 +64,8 @@ export default {
                 gradYear: payload.gradYear,
                 status: payload.status,
                 acadYear: payload.acadYear,
-                groups: groups
+                groups: groups,
+                file: ""
 
             })
             if (payload.role == "student") {

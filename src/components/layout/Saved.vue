@@ -2,6 +2,9 @@
   <div v-for="saved in savedpostd" :key="saved">
     <Post :post="saved" />
   </div>
+  <div v-if="savedpostd.length == 0">
+    <p>You Dont Have Any Saved Post</p>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";

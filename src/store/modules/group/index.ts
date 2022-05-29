@@ -47,7 +47,7 @@ export default {
                 content: payload.content,
                 createdAt: payload.createdAt.toString(),
                 file: "",
-                likes: 0,
+                likes: [],
                 id: id.toString(),
                 user: {
                     fname: payload.userInfo.firstName,
@@ -222,5 +222,58 @@ export default {
                     context.commit("savedPost", allSaved)
                 });
         },
+
+        async likePost(context: any, payload: any) {
+            console.log(payload);
+            console.log("asdd");
+
+            let allpost = payload.posts;
+            console.log(allpost);
+
+            const index = allpost.findIndex((post: any) => post.id == payload.postId)
+            let currentPost = allpost[index]
+            let currentlikes = currentPost?.likes;
+            currentlikes.push({
+                firstName: payload.user.firstName,
+                lastName: payload.user.lastName,
+                id: payload.user.id,
+                file: payload.user.file
+            });
+            currentPost = { ...currentPost, likes: currentlikes }
+
+            allpost[index] = currentPost;
+
+            await db
+                .collection("groups")
+                .doc(payload.groupId.toString())
+                .update({ posts: allpost })
+                .then(() => {
+                    console.log("likes updated!");
+                });
+
+        },
+        async removelikePost(context: any, payload: any) {
+            console.log(payload);
+
+            let allpost = payload.posts;
+            const index = allpost.findIndex((post: any) => post.id == payload.postId)
+            let currentPost = allpost[index]
+            let currentlikes = currentPost.likes;
+            const indexLikes = currentlikes.findIndex((like: any) => like.id == payload.user.id)
+
+            currentlikes.splice(indexLikes, 1);
+            currentPost = { ...currentPost, likes: currentlikes }
+
+            allpost[index] = currentPost;
+
+            await db
+                .collection("groups")
+                .doc(payload.groupId.toString())
+                .update({ posts: allpost })
+                .then(() => {
+                    console.log("likes updated!");
+                });
+
+        }
     },
 };

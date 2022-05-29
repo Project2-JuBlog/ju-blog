@@ -64,8 +64,14 @@
       </div>
 
       <!-- Post Footer -->
+      <div class="d-flex justify-content-between mt-3">
+        <div role="button" @click.prevent="islikesOpen = true">
+          {{ post.likes.length }} likes
+        </div>
+        <div role="button" @click.prevent="openComment = true">comment</div>
+      </div>
       <div
-        class="post-footer border-top mt-5 pt-3 px-md-4 px-0 border-2 d-flex justify-content-between align-items-center align-self-center"
+        class="post-footer border-top pt-3 px-md-4 px-0 border-2 d-flex justify-content-between align-items-center align-self-center"
       >
         <div
           class="post-like gap-2 d-flex justify-content-center"
@@ -120,6 +126,16 @@
     id="exampleModal"
     tabindex="-1"
     labelledby="exampleModalLabel"
+    v-model="islikesOpen"
+    centered
+  >
+    <ListLike :likes="post.likes" @close="islikesOpen = false" />
+  </MDBModal>
+
+  <MDBModal
+    id="exampleModal"
+    tabindex="-1"
+    labelledby="exampleModalLabel"
     v-model="isDelete"
     centered
     size="sm"
@@ -135,6 +151,7 @@ import moment from "moment";
 import db from "../../firebase";
 
 import EditPost from "@/components/modal/EditPost.vue";
+import ListLike from "@/components/modal/ListLike.vue";
 import DeletePost from "@/components/modal/DeletePost.vue";
 export default defineComponent({
   props: ["post"],
@@ -147,17 +164,40 @@ export default defineComponent({
       isDelete: false,
       idNo: 0 as any,
       comments: [],
+      islikesOpen: false,
     };
   },
-  components: { EditPost, DeletePost, Comments },
+  components: { EditPost, DeletePost, Comments, ListLike },
   methods: {
     ...mapActions({
       savedpost: "Group/savedpost",
       getSaved: "Group/getSaved",
       Removesavedpost: "Group/Removesavedpost",
+      likePostm: "Group/likePost",
+      removelikePost: "Group/removelikePost",
     }),
 
     LikePost() {
+      console.log(this.group);
+      console.log(this.group.posts);
+      console.log(this.post.id);
+      console.log(this.user);
+
+      if (this.isLiked == false) {
+        this.likePostm({
+          groupId: this.group.id,
+          posts: this.group.posts,
+          postId: this.post.id,
+          user: this.user,
+        });
+      } else {
+        this.removelikePost({
+          groupId: this.group.id,
+          posts: this.group.posts,
+          postId: this.post.id,
+          user: this.user,
+        });
+      }
       this.isLiked = !this.isLiked;
     },
     async commentPost() {
@@ -204,6 +244,7 @@ export default defineComponent({
     ...mapGetters({
       user: "Auth/userInfo",
       savedpostd: "Group/savedpost",
+      group: "Group/group",
     }),
     userData(): any {
       return this.user;
@@ -215,16 +256,6 @@ export default defineComponent({
       this.idNo = this.$route.params.id;
       return this.idNo;
     },
-
-    // isSaveds() {
-    //   this.savedpostd.map((item: any) => {
-    //     if (item.id == this.post.id) {
-    //       console.log("d");
-    //       this.isSaved = true;
-    //     }
-    //   });
-    //   return this.isSaved;
-    // },
   },
   created() {
     this.idNo = this.$route.params.id;
@@ -236,7 +267,12 @@ export default defineComponent({
           this.isSaved = true;
         }
       });
-      return this.isSaved;
+
+      this.post?.likes?.map((item: any) => {
+        if (item.id == this.user.id) {
+          this.isLiked = true;
+        }
+      });
     }, 800);
   },
 });
