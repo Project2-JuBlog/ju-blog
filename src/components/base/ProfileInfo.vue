@@ -2,11 +2,11 @@
   <div class="profile-info mt-5 px-3">
     <div class="row">
       <h3 class="col-md-3 col-12">Email address :</h3>
-      <h4 class="col">rawan2000abdullah@gmail.com</h4>
+      <h4 class="col">{{ user.email }}</h4>
     </div>
     <div class="row">
       <h3 class="col-md-3 col-12">Phone number :</h3>
-      <h4 class="col">0799281417</h4>
+      <h4 class="col">{{ user.phoneNumber }}</h4>
     </div>
     <div class="row">
       <h3 class="col-md-3 col-6">Languages :</h3>
@@ -122,6 +122,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -132,6 +133,11 @@ export default defineComponent({
       isLanguages: false,
       isVolunteer: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: "Auth/userInfo",
+    }),
   },
 });
 </script>

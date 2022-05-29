@@ -1,5 +1,5 @@
 <template>
-  <BaseCard2>
+  <BaseCard2 v-if="post">
     <div class="post">
       <!-- Post Header -->
       <div class="d-flex justify-content-between">
@@ -7,21 +7,27 @@
           class="d-flex gap-2 justify-content-center align-items-center align-self-center"
         >
           <div>
-            <img
+            <!-- <img
               :src="require('@/assets/img/' + userImage)"
               width="40"
               height="40"
-            />
+            /> -->
           </div>
-          <div>
-            <p class="p-0 m-0 fw-bold">{{ userData.name }}</p>
+          <div class="name-post">
+            <router-link :to="{ name: 'Profile' }">
+              <p class="p-0 m-0 fw-bold">
+                {{ post.user.fname + " " + post.user.lname }}
+              </p>
+            </router-link>
             <p class="p-0 m-0">
-              <span class="post-group-name me-2">{{ userData.status }}</span>
-              <span class="post-date">20/5/2022</span>
+              <span class="post-group-name me-2">{{ post.user.status }}</span>
+              <span class="post-date"
+                >{{ moment(post.createdAt).format("DD-MM-YYYY") }}
+              </span>
             </p>
           </div>
         </div>
-        <div class="dropdown">
+        <div class="dropdown" v-if="post.user.id == user.id">
           <div
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -51,15 +57,9 @@
       </div>
 
       <!-- Post Body -->
-      <div class="post-body mt-4">
+      <div class="post-body mt-4 px-3">
         <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione,
-          excepturi ipsam nulla aperiam enim minus natus voluptates nesciunt
-          libero numquam incidunt consectetur harum magni similique explicabo
-          quis quisquam autem maximLorem, ipsum dolor sit amet consectetur
-          adipisicing elit. Ratione, excepturi ipsam nulla aperiam enim minus
-          natus voluptates nesciunt libero numquam incidunt consectetur harum
-          magni similique explicabo quis quisquam autem maxime.
+          {{ post.content }}
         </p>
       </div>
 
@@ -102,12 +102,11 @@
           v-if="openComment"
           class="border-top mt-3 pt-3 px-md-4 px-0 border-2"
         >
-          <Comments />
+          <Comments :comments="comments" :postId="post.id" />
         </div>
       </Transition>
     </div>
   </BaseCard2>
-
   <MDBModal
     id="exampleModal"
     tabindex="-1"
@@ -130,12 +129,15 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Comments from "@/components/base/Comments.vue";
+import moment from "moment";
+import db from "../../firebase";
 
 import EditPost from "@/components/modal/EditPost.vue";
 import DeletePost from "@/components/modal/DeletePost.vue";
 export default defineComponent({
+  props: ["post"],
   data() {
     return {
       isLiked: false,
@@ -144,17 +146,51 @@ export default defineComponent({
       editPost: false,
       isDelete: false,
       idNo: 0 as any,
+      comments: [],
     };
   },
   components: { EditPost, DeletePost, Comments },
   methods: {
+    ...mapActions({
+      savedpost: "Group/savedpost",
+      getSaved: "Group/getSaved",
+      Removesavedpost: "Group/Removesavedpost",
+    }),
+
     LikePost() {
       this.isLiked = !this.isLiked;
     },
-    commentPost() {
+    async commentPost() {
+      await db
+        .collection("comments")
+        .doc(this.post.id)
+        .get()
+        .then((snapshot: any) => {
+          const document: any = snapshot.data()?.comment;
+          console.log(document);
+          this.comments = document;
+        });
       this.openComment = !this.openComment;
     },
     SavedPost() {
+      console.log(this.isSaved);
+      if (this.isSaved == false) {
+        console.log("Addd");
+
+        this.savedpost({
+          post: this.post,
+          savedpost: this.savedpostd,
+          user: this.user,
+        });
+      } else {
+        console.log("remove");
+
+        this.Removesavedpost({
+          post: this.post,
+          savedpost: this.savedpostd,
+          user: this.user,
+        });
+      }
       this.isSaved = !this.isSaved;
     },
     editPosts() {
@@ -166,7 +202,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      user: "Auth/user",
+      user: "Auth/userInfo",
+      savedpostd: "Group/savedpost",
     }),
     userData(): any {
       return this.user;
@@ -178,9 +215,29 @@ export default defineComponent({
       this.idNo = this.$route.params.id;
       return this.idNo;
     },
+
+    // isSaveds() {
+    //   this.savedpostd.map((item: any) => {
+    //     if (item.id == this.post.id) {
+    //       console.log("d");
+    //       this.isSaved = true;
+    //     }
+    //   });
+    //   return this.isSaved;
+    // },
   },
   created() {
     this.idNo = this.$route.params.id;
+    console.log(this.savedpostd);
+    setTimeout(async () => {
+      this.savedpostd?.map((item: any) => {
+        if (item.id == this.post.id) {
+          console.log("d");
+          this.isSaved = true;
+        }
+      });
+      return this.isSaved;
+    }, 800);
   },
 });
 </script>
@@ -207,5 +264,11 @@ export default defineComponent({
 .slide-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+.name-post {
+  a {
+    text-decoration: none;
+    color: $color-black;
+  }
 }
 </style>

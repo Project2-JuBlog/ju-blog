@@ -1,14 +1,15 @@
 <template>
   <div class="d-flex comment mb-3">
-    <div>
-      <img src="@/assets/img/rawanimage.png" width="45" height="45" />
+    <div class="">
+      <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
+      <p class="text-center rounded-circle name-section p-1">
+        {{ comment.user.fname }}
+      </p>
     </div>
-    <div>
-      <div class="mx-2 p-2 my-0 comment-content row">
+    <div class="w-100">
+      <div class="mx-2 p-2 my-0 mt-3 comment-content row">
         <p class="col-11">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-          fugiat doloribus adipisci laboriosam id, molestias aperiam ab
-          obcaecati a quia nihil? Atque cum
+          {{ comment.content }}
         </p>
         <div class="dropdown col-1 mt-2">
           <div
@@ -39,6 +40,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: ["comment"],
   data() {
     return {
       isLiked: false,
@@ -52,7 +54,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/sass/main";
 
 .comment {
@@ -68,5 +70,16 @@ export default defineComponent({
 }
 .cursor {
   cursor: pointer;
+}
+.name-section {
+  color: white;
+  background-color: $color-button;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  word-break: break-all;
 }
 </style>

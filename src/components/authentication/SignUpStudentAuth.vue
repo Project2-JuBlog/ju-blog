@@ -47,12 +47,18 @@
             class="form-select"
             v-model="collage"
             aria-label="Default select example"
+            @change="setcollagehandler"
           >
             <option value="">Colleage</option>
-            <option value="KASIT">KASIT</option>
+            <option
+              v-for="collage in collages"
+              :key="collage.id"
+              :value="collage"
+            >
+              {{ collage.name }}
+            </option>
           </select>
         </div>
-
         <div class="col">
           <select
             class="form-select"
@@ -60,11 +66,10 @@
             aria-label="Default select example"
           >
             <option value="">Major</option>
-            <option value="CIS">CIS</option>
-            <option value="CS">CS</option>
-            <option value="BIT">BIT</option>
-            <option value="DS">DS</option>
-            <option value="AI">AI</option>
+
+            <option v-for="major in majors" :key="major.id" :value="major">
+              {{ major.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -114,7 +119,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -124,7 +129,7 @@ export default defineComponent({
       password: "",
       fname: "",
       lname: "",
-      collage: "",
+      collage: "" as any,
       major: "",
       phoneNo: 0 as number,
       status: "",
@@ -132,9 +137,17 @@ export default defineComponent({
       gradYear: "",
     };
   },
+  computed: {
+    ...mapGetters({
+      collages: "Group/collage",
+      majors: "Group/major",
+    }),
+  },
   methods: {
     ...mapActions({
       signup: "Auth/signup",
+      setCollage: "Group/setCollage",
+      setMajor: "Group/setMajor",
     }),
     async submitForm() {
       this.isLoading = true;
@@ -153,6 +166,12 @@ export default defineComponent({
       });
       this.isLoading = false;
     },
+    setcollagehandler() {
+      this.setMajor(this.collage.id);
+    },
+  },
+  created() {
+    this.setCollage();
   },
 });
 </script>

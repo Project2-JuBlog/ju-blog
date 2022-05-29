@@ -2,18 +2,20 @@
   <div class="profile">
     <section class="row profile-header border-bottom border-2 py-3">
       <div class="col-3">
-        <img
+        <!-- <img
           :src="require('@/assets/img/' + userImage)"
           width="150"
           height="150"
-        />
+        /> -->
       </div>
       <div class="col-7 profile-header-detail">
-        <h1 class="mt-5 mb-4">{{ userData.name }}</h1>
+        <h1 class="mt-5 mb-4">
+          {{ userData.firstName + " " + userData.lastName }}
+        </h1>
         <h4>{{ userData.collage }} -{{ userData.major }}</h4>
         <h4>
           {{ userData.status }} -
-          <span v-if="userData.status !== 'student'"
+          <span v-if="userData.status !== 'Student'"
             >from {{ userData.gradYear }}</span
           >
           <span v-else>{{ userData.acadYear }} Year</span>
@@ -94,7 +96,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters({
-      user: "Auth/user",
+      user: "Auth/userInfo",
     }),
     userData(): any {
       return this.user;

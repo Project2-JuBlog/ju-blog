@@ -54,7 +54,7 @@ import { mapGetters } from "vuex";
 export default defineComponent({
   computed: {
     ...mapGetters({
-      user: "Auth/user",
+      user: "Auth/userInfo",
     }),
   },
 });

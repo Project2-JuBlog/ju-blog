@@ -1,15 +1,19 @@
 <template>
   <BaseCard2>
-    <div class="row mb-3">
-      <div class="col-1">
-        <img src="@/assets/img/rawanimage.png" width="55" height="55" />
+    <div class="d-flex mb-3">
+      <div class="mx-2">
+        <!-- <img src="@/assets/img/rawanimage.png" width="55" height="55" /> -->
+        <p class="text-center rounded-circle name-section p-1">
+          {{ userInfo.firstName }}
+        </p>
       </div>
-      <div class="py-1 col-11">
+      <div class="py-1 w-100">
         <form>
           <textarea
             class="form-control write-comment p-2"
-            placeholder="Add a Comment ..."
+            placeholder="Add a post ..."
             rows="3"
+            v-model="content"
           ></textarea>
         </form>
       </div>
@@ -34,13 +38,48 @@
         </div>
       </div>
       <div>
-        <button class="btns-save rounded-pill">Post</button>
+        <button class="btns-save rounded-pill" @click.prevent="createPost()">
+          Post
+        </button>
       </div>
     </div>
   </BaseCard2>
 </template>
+<script>
+import { defineComponent } from "vue";
+import { mapActions, mapGetters } from "vuex";
 
-<style lang="scss">
+export default defineComponent({
+  props: ["groupId", "postId"],
+  data() {
+    return { content: "" };
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: "Auth/userInfo",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      Addpost: "Group/Addpost",
+    }),
+    async createPost() {
+      let date = new Date();
+
+      await this.Addpost({
+        groupId: this.groupId,
+        postId: this.postId,
+        content: this.content,
+        createdAt: date,
+        userInfo: this.userInfo,
+      });
+      this.content = "";
+    },
+  },
+});
+</script>
+
+<style lang="scss" scoped>
 @import "@/assets/sass/main";
 .btns-save {
   background-color: $color-button;
@@ -48,5 +87,16 @@
   width: 100px;
   height: 30px;
   border: 0px;
+}
+.name-section {
+  color: white;
+  background-color: $color-button;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  word-break: break-all;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <BaseCard class="name-section">
     <router-link :to="{ name: 'Profile' }" active-class="active-list">
-      <img :src="require('@/assets/img/' + userImage)" width="40" height="40" />
-      <strong class="header-black px-3">{{ userData.name }}</strong>
+      <!-- <img :src="require('@/assets/img/' + user.file)" width="40" height="40" /> -->
+      <strong class="header-black px-3">{{ userName }}</strong>
     </router-link>
   </BaseCard>
 </template>
@@ -14,14 +14,14 @@ import { mapGetters } from "vuex";
 export default defineComponent({
   computed: {
     ...mapGetters({
-      user: "Auth/user",
+      user: "Auth/userInfo",
     }),
-    userData(): any {
-      return this.user;
+    userName(): any {
+      return this.user.firstName + " " + this.user.lastName;
     },
-    userImage(): any {
-      return this.user.image;
-    },
+    // userImage(): any {
+    //   return this.user.file;
+    // },
   },
 });
 </script>

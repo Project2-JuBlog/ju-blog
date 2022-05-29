@@ -1,11 +1,15 @@
 import axios from "../../../axios";
 import router from "../../../router";
+import db from "../../../firebase";
+// const db = firebase.firestore();
+
 let timer: any;
 export default {
     namespaced: true,
     state: {
         token: "",
         tokenExpiration: "",
+        userInfo: {},
         user: {
             name: "test test",
             email: "",
@@ -24,49 +28,71 @@ export default {
         user(state: any) {
             return state.user;
         },
+        userInfo(state: any) {
+            return state.userInfo;
+
+        },
         token(state: any) {
             return state.token;
         },
         isAuthenticated(state: any) {
             return state.token ? true : false;
         },
+        userGroup(state: any) {
+            return state.userInfo.groups;
+        }
     },
     mutations: {
         setUser(state: any, payload: any) {
             state.token = payload.token;
             state.user.userId = payload.userId;
+
         },
         setUserInfo(state: any, payload: any) {
-            const user: any = axios.post(`users.json`, {
+            const groups = [];
+            groups.push(payload.major);
+            groups.push(payload.collage);
+            db.collection("users").doc(state.user.userId).set({
                 id: state.user.userId,
                 role: payload.role,
                 firstName: payload.firstName,
                 lastName: payload.lastName,
                 phoneNumber: payload.phoneNumber,
                 email: payload.email,
-                collage: payload.collage,
-                major: payload.major,
+                collage: payload.collage.name,
+                major: payload.major.name,
                 gradYear: payload.gradYear,
                 status: payload.status,
                 acadYear: payload.acadYear,
-            });
-            if (user) {
-                if (payload.role == "student") {
-                    router.push({ name: "Feed" });
-                }
-                state.user.name = payload.firstName + " " + payload.lastName;
-                state.user.email = payload.email;
-                state.user.role = payload.role;
-                state.user.phoneNo = payload.phoneNumber;
-                state.user.collage = payload.collage;
-                state.user.major = payload.major;
-                state.user.gradYear = payload.gradYear;
-                state.user.status = payload.status;
-                state.user.acadYear = payload.acadYear;
+                groups: groups
+
+            })
+            if (payload.role == "student") {
+                router.push({ name: "Feed" });
             }
+
+
         },
+        async getUserInfo(state: any, payload: any) {
+            console.log("get mutation");
+            await db.collection("users").doc(state.user.userId).get().then((snapshot: any) => {
+                const document: any = snapshot.data();
+                console.log(document);
+                state.userInfo = document
+
+            })
+
+
+        }
+
     },
     actions: {
+        getUser(context: any, payload: any) {
+            console.log("get action");
+
+            context.commit('getUserInfo', payload)
+
+        },
         async login(context: any, payload: any) {
             await context.dispatch("auth", { ...payload, mode: "login" });
 

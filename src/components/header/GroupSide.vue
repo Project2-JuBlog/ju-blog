@@ -2,7 +2,7 @@
   <span class="px-5">Your Groups</span>
   <BaseCard>
     <ul class="list-navbar">
-      <li v-for="group in groups" :key="group.id">
+      <li v-for="group in groupsList" :key="group.id">
         <router-link
           :to="{ name: 'general', params: { id: group.id } }"
           active-class="active-list"
@@ -15,6 +15,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -24,6 +25,20 @@ export default defineComponent({
         { id: 2, name: "CIS" },
       ],
     };
+  },
+  methods: {
+    ...mapActions({ getUser: "Auth/getUser" }),
+  },
+  computed: {
+    ...mapGetters({
+      userGroups: "Auth/userGroup",
+    }),
+    groupsList(): any {
+      return this.userGroups;
+    },
+  },
+  created() {
+    this.getUser();
   },
 });
 </script>

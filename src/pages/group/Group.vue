@@ -15,5 +15,6 @@ import Navigation from "@/components/header/Navigation.vue";
 
 export default defineComponent({
   components: { Navigation, SideNav },
+
 });
 </script>

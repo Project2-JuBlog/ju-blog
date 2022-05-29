@@ -63,7 +63,7 @@ import ImportantLink from "@/components/header/ImportantLink.vue";
 import EventSide from "@/components/header/EventSide.vue";
 
 import AddEvent from "@/components/modal/AddEvent.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 import AddGeneralEvent from "@/components/modal/AddGeneralEvent.vue";
 export default defineComponent({
@@ -97,8 +97,14 @@ export default defineComponent({
       }
     },
     ...mapGetters({
-      user: "Auth/user",
+      user: "Auth/userInfo",
     }),
+  },
+  methods: {
+    ...mapActions({ getUser: "Auth/getUser" }),
+  },
+  created() {
+    this.getUser();
   },
 });
 </script>

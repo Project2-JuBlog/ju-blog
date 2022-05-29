@@ -1,11 +1,15 @@
 <template>
   <!-- Write Comment -->
   <div>
-    <div class="row mb-3">
-      <div class="col-1">
-        <img src="@/assets/img/rawanimage.png" width="45" height="45" />
+    <div class="d-flex mb-3">
+      <div class="">
+        <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
+
+        <p class="text-center rounded-circle name-section p-1">
+          {{ userInfo.firstName }}
+        </p>
       </div>
-      <div class="py-1 col-10">
+      <div class="py-1 mx-2 mt-2 w-100">
         <form>
           <textarea
             class="form-control write-comment p-2"
@@ -15,10 +19,7 @@
           ></textarea>
         </form>
       </div>
-      <div
-        class="col-1 align-self-center cursor mx-0"
-        @click.prevent="CreateComment"
-      >
+      <div class="align-self-center cursor mx-2" @click.prevent="CreateComment">
         <img src="@/assets/img/arrow.svg" width="25" height="25" />
       </div>
     </div>
@@ -27,31 +28,50 @@
   <p>Most relevant</p>
 
   <div class="comments-section">
-    <div v-for="i in 4" :key="i">
-      <Comment />
+    <div v-for="comment in comments" :key="comment">
+      <Comment :comment="comment" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions, mapGetters } from "vuex";
+
 import Comment from "@/components/base/Comment.vue";
 export default defineComponent({
+  props: ["comments", "postId"],
   data() {
     return {
       newComment: "",
     };
   },
+  computed: {
+    ...mapGetters({
+      userInfo: "Auth/userInfo",
+    }),
+  },
   components: { Comment },
   methods: {
-    CreateComment() {
+    ...mapActions({
+      Addcomments: "Group/Addcomments",
+    }),
+    async CreateComment() {
       console.log(this.newComment);
+      await this.Addcomments({
+        content: this.newComment,
+        comments: this.comments,
+        postId: this.postId,
+        userInfo: this.userInfo,
+      });
       this.newComment = "";
     },
   },
 });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import "@/assets/sass/main";
+
 .comments-section {
   max-height: 300px;
   overflow-y: auto;
@@ -61,5 +81,16 @@ export default defineComponent({
 }
 .write-comment {
   border-radius: 15px;
+}
+.name-section {
+  color: white;
+  background-color: $color-button;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  word-break: break-all;
 }
 </style>
