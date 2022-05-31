@@ -19,17 +19,6 @@
           stylePanelAspectRatio="1:1"
         />
       </div>
-
-      <label for="email" class="col-12">
-        Email Addrress:
-        <input
-          type="email"
-          class="form-control"
-          placeholder="xxxxx@ju.edu.jo"
-          v-model="Info.email"
-        />
-      </label>
-
       <label for="email" class="col-12">
         Phone Number:
         <input
@@ -170,6 +159,7 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import { mapActions, mapGetters } from "vuex";
 const FilePond: any = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview
@@ -177,30 +167,40 @@ const FilePond: any = vueFilePond(
 
 export default defineComponent({
   emits: ["close"],
+  props: ["user"],
   data() {
     return {
       Info: {
-        myFiles: [],
-        language: [],
-        skills: [],
-        experience: [],
-        volunteer: [],
-        certificate: [] as any,
+        myFiles: this.user?.file,
+        language: this.user?.languages,
+        skills: this.user?.skills,
+        experience: this.user?.experiense,
+        volunteer: this.user?.volunteer,
+        certificate: this.user?.Certificate,
+        phone: this.user?.phoneNumber,
       },
 
       file: "" as any,
-      volunteerCounter: 1 as number,
-      experienceCounter: 1 as number,
-      languageCounter: 1 as number,
-      skillsCounter: 1 as number,
+      volunteerCounter: this.user?.volunteer?.length as number,
+      experienceCounter: this.user?.experiense?.length as number,
+      languageCounter: this.user?.languages?.length as number,
+      skillsCounter: this.user?.skills?.length as number,
     };
+  },
+  computed: {
+    ...mapGetters({
+      userProfile: "Profile/userProfile",
+    }),
   },
   components: {
     FilePond,
   },
   methods: {
+    ...mapActions({
+      editUserCv: "Profile/editUserCv",
+    }),
     SubmitEdit() {
-      console.log(this.Info);
+      this.editUserCv({ id: this.user.id, info: this.Info });
       this.$emit("close");
     },
     handleFilePondInit(event: any) {

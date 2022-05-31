@@ -4,3 +4,11 @@
 @import "mixins/mixins";
 @import "base/variables";
 @import "base/typography.scss";
+
+a {
+    color: $gray;
+    text-decoration: none;
+    &:hover {
+        color: $gray;
+    }
+}

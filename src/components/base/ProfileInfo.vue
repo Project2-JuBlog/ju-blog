@@ -2,11 +2,11 @@
   <div class="profile-info mt-5 px-3">
     <div class="row">
       <h3 class="col-md-3 col-12">Email address :</h3>
-      <h4 class="col">{{ user.email }}</h4>
+      <h4 class="col">{{ userData.email }}</h4>
     </div>
     <div class="row">
       <h3 class="col-md-3 col-12">Phone number :</h3>
-      <h4 class="col">{{ user.phoneNumber }}</h4>
+      <h4 class="col">{{ userData.phoneNumber }}</h4>
     </div>
     <div class="row">
       <h3 class="col-md-3 col-6">Languages :</h3>
@@ -23,8 +23,12 @@
       </h4>
       <div v-if="isLanguages" class="px-5 mt-4">
         <p>
-          <span class="rounded-pill tags">Arabic</span
-          ><span class="rounded-pill tags">English</span>
+          <span
+            class="rounded-pill tags"
+            v-for="lang in userData.languages"
+            :key="lang"
+            >{{ lang }}</span
+          >
         </p>
       </div>
     </div>
@@ -43,14 +47,12 @@
       </h4>
       <div v-if="isSkills" class="px-5 mt-4">
         <p class="d-flex flex-wrap col-md-7 col-12">
-          <span class="rounded-pill tags">Html</span>
-          <span class="rounded-pill tags">CSS</span>
-          <span class="rounded-pill tags">vue</span>
-          <span class="rounded-pill tags">Bootstrap</span>
-          <span class="rounded-pill tags">js</span>
-          <span class="rounded-pill tags">js</span>
-          <span class="rounded-pill tags">js</span>
-          <span class="rounded-pill tags">js</span>
+          <span
+            v-for="skill in userData.skills"
+            :key="skill"
+            class="rounded-pill tags"
+            >{{ skill }}</span
+          >
         </p>
       </div>
     </div>
@@ -69,8 +71,7 @@
       </h4>
       <div v-if="isExperince" class="mx-5 mt-2">
         <ul>
-          <li>Work at QBS</li>
-          <li>Work at Rhinosoft</li>
+          <li v-for="exp in userData.experiense" :key="exp">{{ exp }}</li>
         </ul>
       </div>
     </div>
@@ -90,9 +91,9 @@
       </h4>
       <div v-if="isVolunteer" class="mx-5 mt-2">
         <ul>
-          <li>Volunteer with iTeam in Ju</li>
-          <li>lorem lorem</li>
-          <li>lorem Ipsum</li>
+          <li v-for="voluntee in userData.volunteer" :key="voluntee">
+            {{ voluntee }}
+          </li>
         </ul>
       </div>
     </div>
@@ -113,8 +114,12 @@
 
       <div v-if="isCertificates" class="px-5 mt-4">
         <p>
-          <span class="rounded-pill tags">HTMLCertifcate.pdf</span
-          ><span class="rounded-pill tags">cssCertifcate.pdf</span>
+          <span
+            class="rounded-pill tags"
+            v-for="cert in userData.Certificate"
+            :key="cert"
+            >{{ cert }}</span
+          >
         </p>
       </div>
     </div>
@@ -122,9 +127,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
 
 export default defineComponent({
+  props: ["userData"],
   data() {
     return {
       isExperince: false,
@@ -133,11 +138,6 @@ export default defineComponent({
       isLanguages: false,
       isVolunteer: false,
     };
-  },
-  computed: {
-    ...mapGetters({
-      user: "Auth/userInfo",
-    }),
   },
 });
 </script>

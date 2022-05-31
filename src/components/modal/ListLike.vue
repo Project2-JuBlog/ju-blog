@@ -10,9 +10,13 @@
         :key="like.id"
       >
         <p class="text-center rounded-circle name-sections p-1">
-          {{ like.firstName }}
+          <router-link :to="'/home/profile/' + like.id">
+            {{ like.firstName }}
+          </router-link>
         </p>
-        <p class="px-2">{{ like.firstName }} {{ like.lastName }}</p>
+        <router-link :to="'/home/profile/' + like.id">
+          <p class="px-2">{{ like.firstName }} {{ like.lastName }}</p>
+        </router-link>
       </div>
       <div v-if="likes.length == 0">
         <p>No One Like Your Post</p>
@@ -34,7 +38,10 @@ export default defineComponent({
 <style lang="scss">
 @import "@/assets/sass/main";
 .name-sections {
-  color: white;
+  a {
+    color: white;
+    text-decoration: none;
+  }
   background-color: $color-button;
   width: 60px;
   height: 60px;

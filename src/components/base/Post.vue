@@ -14,7 +14,7 @@
             /> -->
           </div>
           <div class="name-post">
-            <router-link :to="{ name: 'Profile' }">
+            <router-link :to="'/home/profile/' + post.user.id">
               <p class="p-0 m-0 fw-bold">
                 {{ post.user.fname + " " + post.user.lname }}
               </p>

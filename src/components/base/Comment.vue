@@ -1,10 +1,12 @@
 <template>
   <div class="d-flex comment mb-3">
-    <div class="">
-      <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
-      <p class="text-center rounded-circle name-section p-1">
-        {{ comment.user.fname }}
-      </p>
+    <div>
+      <router-link :to="'/home/profile/' + comment.user.id">
+        <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
+        <p class="text-center rounded-circle name-section p-1">
+          {{ comment.user.fname }}
+        </p>
+      </router-link>
     </div>
     <div class="w-100">
       <div class="mx-2 p-2 my-0 mt-3 comment-content row">
@@ -81,5 +83,6 @@ export default defineComponent({
   justify-items: center;
   justify-content: center;
   word-break: break-all;
+  text-decoration: none;
 }
 </style>

@@ -68,6 +68,27 @@ export default {
                 file: ""
 
             })
+            db.collection("cv").doc(state.user.userId).set({
+                id: state.user.userId,
+                role: payload.role,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                phoneNumber: payload.phoneNumber,
+                email: payload.email,
+                collage: payload.collage.name,
+                major: payload.major.name,
+                gradYear: payload.gradYear,
+                status: payload.status,
+                acadYear: payload.acadYear,
+                file: "",
+                Certificate: [],
+                experiense: [],
+                languages: [],
+                recommendation: [],
+                skills: [],
+                volunteer: []
+
+            })
             if (payload.role == "student") {
                 router.push({ name: "Feed" });
             }

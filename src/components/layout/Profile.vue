@@ -2,11 +2,9 @@
   <div class="profile">
     <section class="row profile-header border-bottom border-2 py-3">
       <div class="col-3">
-        <!-- <img
-          :src="require('@/assets/img/' + userImage)"
-          width="150"
-          height="150"
-        /> -->
+        <p class="text-center rounded-circle name-section p-1">
+          {{ userData.firstName }}
+        </p>
       </div>
       <div class="col-7 profile-header-detail">
         <h1 class="mt-5 mb-4">
@@ -16,9 +14,9 @@
         <h4>
           {{ userData.status }} -
           <span v-if="userData.status !== 'Student'"
-            >from {{ userData.gradYear }}</span
+            >from {{ userData?.gradYear }}</span
           >
-          <span v-else>{{ userData.acadYear }} Year</span>
+          <span v-else>{{ userData?.acadYear }} Year</span>
         </h4>
       </div>
       <div class="col-2 d-flex align-items-end">
@@ -28,7 +26,7 @@
           >
         </div>
         <img
-          v-else
+          v-else-if="user.id == userData.id"
           src="@/assets/img/edit.svg"
           @click="isEdit = !isEdit"
           class="img-edit"
@@ -47,8 +45,12 @@
         <!-- Tabs navs -->
         <!-- Tabs content -->
         <MDBTabContent>
-          <MDBTabPane tabId="info"><ProfileInfo /></MDBTabPane>
-          <MDBTabPane tabId="reco"><ProfileRecom /></MDBTabPane>
+          <MDBTabPane tabId="info"
+            ><ProfileInfo :userData="userData"
+          /></MDBTabPane>
+          <MDBTabPane tabId="reco"
+            ><ProfileRecom :userData="userData?.recommendation"
+          /></MDBTabPane>
         </MDBTabContent>
         <!-- Tabs content -->
       </MDBTabs>
@@ -62,7 +64,7 @@
     v-model="isEdit"
     centered
   >
-    <EditProfile @close="isEdit = false" />
+    <EditProfile @close="isEdit = false" :user="userData" />
   </MDBModal>
 
   <MDBModal
@@ -83,7 +85,7 @@ import ProfileRecom from "@/components/base/ProfileRecom.vue";
 
 import Recommand from "@/components/modal/Recommand.vue";
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default defineComponent({
   components: { EditProfile, ProfileInfo, ProfileRecom, Recommand },
@@ -97,13 +99,21 @@ export default defineComponent({
   computed: {
     ...mapGetters({
       user: "Auth/userInfo",
+      userProfile: "Profile/userProfile",
     }),
     userData(): any {
-      return this.user;
+      return this.userProfile;
     },
-    userImage(): any {
-      return this.user.image;
-    },
+  },
+  methods: {
+    ...mapActions({
+      getUserCv: "Profile/getUserCv",
+    }),
+  },
+  async created() {
+    let id = this.$route.params.id;
+
+    await this.getUserCv(id);
   },
 });
 </script>
@@ -119,6 +129,18 @@ export default defineComponent({
     .img-edit {
       cursor: pointer;
     }
+  }
+  .name-section {
+    color: white;
+    background-color: $color-button;
+    width: 150px;
+    height: 150px;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    word-break: break-all;
   }
 }
 .nav-tabs {
