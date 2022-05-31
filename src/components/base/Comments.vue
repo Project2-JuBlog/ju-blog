@@ -57,7 +57,6 @@ export default defineComponent({
       Addcomments: "Group/Addcomments",
     }),
     async CreateComment() {
-      console.log(this.newComment);
       await this.Addcomments({
         content: this.newComment,
         comments: this.comments,

@@ -1,7 +1,7 @@
 import axios from "../../../axios";
 import router from "../../../router";
 import db from "../../../firebase";
-// const db = firebase.firestore();
+import firebase from 'firebase/compat/app';
 
 let timer: any;
 export default {
@@ -89,6 +89,23 @@ export default {
                 volunteer: []
 
             })
+            for (let i = 0; i < groups.length; i++) {
+
+                db.collection("GroupMember").doc(groups[i].id).update({
+                    memebers: firebase.firestore.FieldValue.arrayUnion({
+                        fname: payload.firstName,
+                        id: state.user.userId,
+                        image: "",
+                        lname: payload.lastName,
+                        role: payload.role,
+                        status: payload.status
+                    })
+                })
+            }
+
+
+
+
             if (payload.role == "student") {
                 router.push({ name: "Feed" });
             }
@@ -96,10 +113,8 @@ export default {
 
         },
         async getUserInfo(state: any, payload: any) {
-            console.log("get mutation");
             await db.collection("users").doc(state.user.userId).get().then((snapshot: any) => {
                 const document: any = snapshot.data();
-                console.log(document);
                 state.userInfo = document
 
             })
@@ -110,7 +125,6 @@ export default {
     },
     actions: {
         getUser(context: any, payload: any) {
-            console.log("get action");
 
             context.commit('getUserInfo', payload)
 

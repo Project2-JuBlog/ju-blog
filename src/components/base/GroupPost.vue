@@ -24,7 +24,6 @@ export default defineComponent({
   },
   created() {
     setTimeout(async () => {
-      console.log("s" + this.user.id);
 
       await this.getSaved(this.user.id);
     }, 800);

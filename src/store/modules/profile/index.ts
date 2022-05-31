@@ -21,7 +21,6 @@ export default {
         async editUserInfo(state: any, payload: any) {
 
             let userdata = state.userProfile;
-            console.log(userdata);
             let newProfileInfor = {
                 id: userdata.id,
                 role: userdata.role,
@@ -42,7 +41,6 @@ export default {
                 skills: payload.info.skills,
                 volunteer: payload.info.volunteer
             }
-            console.log(newProfileInfor);
 
             await db
                 .collection("cv")
@@ -68,7 +66,6 @@ export default {
                 .get()
                 .then((snapshot: any) => {
                     const document: any = snapshot.data();
-                    console.log(document);
                     // state.userInfo = document
                     context.commit('setUser', document)
                 });

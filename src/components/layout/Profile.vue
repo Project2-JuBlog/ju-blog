@@ -7,9 +7,19 @@
         </p>
       </div>
       <div class="col-7 profile-header-detail">
-        <h1 class="mt-5 mb-4">
-          {{ userData.firstName + " " + userData.lastName }}
-        </h1>
+        <div class="d-flex justify-content-between">
+          <h1 class="">
+            {{ userData.firstName + " " + userData.lastName }}
+          </h1>
+          <div v-if="user.id !== userData.id">
+            <base-button v-if="!sentD" @click="addFriend" small
+              >add Friend</base-button
+            >
+            <base-button v-else @click="addFriend" small
+              >Request Sended</base-button
+            >
+          </div>
+        </div>
         <h4>{{ userData.collage }} -{{ userData.major }}</h4>
         <h4>
           {{ userData.status }} -
@@ -94,26 +104,45 @@ export default defineComponent({
       isEdit: false,
       activeTabId3: "info",
       isRecommand: false,
+      isSent: false,
     };
   },
   computed: {
     ...mapGetters({
       user: "Auth/userInfo",
       userProfile: "Profile/userProfile",
+      sent: "Friend/sent",
     }),
     userData(): any {
       return this.userProfile;
+    },
+    sentD(): any {
+      this.sent?.map((item: any) => {
+        if (item.id == this.userProfile.id) {
+          this.isSent = true;
+        } else {
+          this.isSent = false;
+        }
+      });
+      return this.isSent;
     },
   },
   methods: {
     ...mapActions({
       getUserCv: "Profile/getUserCv",
+      addFrineds: "Friend/addFrined",
+      getFreindData: "Friend/getFreindData",
     }),
+    addFriend() {
+      this.addFrineds({ myUser: this.user, frinedUser: this.userProfile });
+    },
   },
   async created() {
     let id = this.$route.params.id;
+    console.log(this.user);
 
     await this.getUserCv(id);
+    await this.getFreindData(this.user.id);
   },
 });
 </script>

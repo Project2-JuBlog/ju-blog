@@ -70,7 +70,6 @@ export default defineComponent({
   },
   methods: {
     searchHandler(name: string) {
-      console.log(name);
       this.$router.push({ name: "searchPage", params: { searchQuery: name } });
     },
   },

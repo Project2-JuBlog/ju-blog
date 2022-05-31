@@ -52,7 +52,6 @@ export default defineComponent({
       logOut: "Auth/logOut",
     }),
     logoutHandler() {
-      console.log("hoooo");
       this.logOut();
     },
   },

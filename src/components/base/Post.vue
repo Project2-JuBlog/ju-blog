@@ -175,17 +175,14 @@ export default defineComponent({
       Removesavedpost: "Group/Removesavedpost",
       likePostm: "Group/likePost",
       removelikePost: "Group/removelikePost",
+      getGroup: "Group/getGroup",
     }),
 
-    LikePost() {
-      console.log(this.group);
-      console.log(this.group.posts);
-      console.log(this.post.id);
-      console.log(this.user);
-
+    async LikePost() {
+      await this.getGroup(this.post.groupId);
       if (this.isLiked == false) {
         this.likePostm({
-          groupId: this.group.id,
+          groupId: this.post.groupId,
           posts: this.group.posts,
           postId: this.post.id,
           user: this.user,
@@ -207,15 +204,12 @@ export default defineComponent({
         .get()
         .then((snapshot: any) => {
           const document: any = snapshot.data()?.comment;
-          console.log(document);
           this.comments = document;
         });
       this.openComment = !this.openComment;
     },
     SavedPost() {
-      console.log(this.isSaved);
       if (this.isSaved == false) {
-        console.log("Addd");
 
         this.savedpost({
           post: this.post,
@@ -223,7 +217,6 @@ export default defineComponent({
           user: this.user,
         });
       } else {
-        console.log("remove");
 
         this.Removesavedpost({
           post: this.post,
@@ -259,11 +252,9 @@ export default defineComponent({
   },
   created() {
     this.idNo = this.$route.params.id;
-    console.log(this.savedpostd);
     setTimeout(async () => {
       this.savedpostd?.map((item: any) => {
         if (item.id == this.post.id) {
-          console.log("d");
           this.isSaved = true;
         }
       });
