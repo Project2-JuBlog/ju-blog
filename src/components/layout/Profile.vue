@@ -175,7 +175,7 @@ export default defineComponent({
     this.$watch(
       () => this.$route.params.id,
       async () => {
-        gawait this.getUserCv(id);
+        await this.getUserCv(id);
         await this.getFreindData(this.user.id);
       }
     );
