@@ -57,17 +57,16 @@ export default {
         },
 
         setSend(state: any, payload: any) {
-            state.sent = payload
+            state.sent = payload;
         },
         setRequest(state: any, payload: any) {
-            state.request = payload
+            state.request = payload;
         },
         setfriends(state: any, payload: any) {
-            state.friends = payload
-        }
+            state.friends = payload;
+        },
     },
     actions: {
-
         async addFrined(context: any, payload: any) {
             await context.commit("setFreinedRequest", payload);
             await context.commit("setMysend", payload);
@@ -86,5 +85,103 @@ export default {
                     context.commit("setfriends", document?.friends);
                 });
         },
+
+        async acceptFriend(context: any, payload: any) {
+            await db
+                .collection("friend")
+                .doc(payload.user.id)
+                .update({
+                    request: firebase.firestore.FieldValue.arrayRemove(
+                        payload.friendAccept
+                    ),
+                })
+                .then(() => {
+                    db.collection("friend")
+                        .doc(payload.user.id)
+                        .set(
+                            {
+                                friends: firebase.firestore.FieldValue.arrayUnion(
+                                    payload.friendAccept
+                                ),
+                            },
+                            { merge: true }
+                        );
+                });
+
+            let myUser = {
+                file: payload.user.file,
+                fname: payload.user.firstName,
+                lname: payload.user.lastName,
+                id: payload.user.id,
+            };
+
+            await db
+                .collection("friend")
+                .doc(payload.friendAccept.id)
+                .update({
+                    send: firebase.firestore.FieldValue.arrayRemove(myUser),
+                })
+                .then(() => {
+                    db.collection("friend")
+                        .doc(payload.friendAccept.id)
+                        .set(
+                            {
+                                friends: firebase.firestore.FieldValue.arrayUnion(myUser),
+                            },
+                            { merge: true }
+                        );
+                });
+        },
+        async delayFriend(context: any, payload: any) {
+            await db
+                .collection("friend")
+                .doc(payload.user.id)
+                .update({
+                    request: firebase.firestore.FieldValue.arrayRemove(
+                        payload.friendDelay
+                    ),
+                })
+                .then(async () => {
+                    let myUser = {
+                        file: payload.user.file,
+                        fname: payload.user.firstName,
+                        lname: payload.user.lastName,
+                        id: payload.user.id,
+                    };
+                    await db
+                        .collection("friend")
+                        .doc(payload.friendDelay.id)
+                        .update({
+                            send: firebase.firestore.FieldValue.arrayRemove(myUser),
+                        });
+                });
+        },
+
+        async deleteFriend(context: any, payload: any) {
+            await db
+                .collection("friend")
+                .doc(payload.user.id)
+                .update({
+                    friends
+                        : firebase.firestore.FieldValue.arrayRemove(
+                            payload.friendDelete
+                        ),
+                })
+                .then(async () => {
+                    let myUser = {
+                        file: payload.user.file,
+                        fname: payload.user.firstName,
+                        lname: payload.user.lastName,
+                        id: payload.user.id,
+                    };
+                    await db
+                        .collection("friend")
+                        .doc(payload.friendDelete.id)
+                        .update({
+                            friends
+                                : firebase.firestore.FieldValue.arrayRemove(myUser),
+                        });
+                });
+        }
     },
 };

@@ -12,11 +12,24 @@
             {{ userData.firstName + " " + userData.lastName }}
           </h1>
           <div v-if="user.id !== userData.id">
-            <base-button v-if="!sentD" @click="addFriend" small
-              >add Friend</base-button
-            >
-            <base-button v-else @click="addFriend" small
-              >Request Sended</base-button
+            <div>
+              <base-button v-if="!sentD && !friendss" @click="addFriend" small
+                >add Friend</base-button
+              >
+              <base-button v-if="sentD && !friendss" @click="addFriend" small
+                >Request Sended</base-button
+              >
+            </div>
+            <base-button
+              v-if="friendss"
+              disabled="disabled"
+              small
+              class="d-flex justify-content-evenly align-content-center align-items-center"
+              ><img
+                src="@/assets/img/isFriend.svg"
+                width="20"
+                height="20"
+              /><span>Friends</span></base-button
             >
           </div>
         </div>
@@ -105,6 +118,7 @@ export default defineComponent({
       activeTabId3: "info",
       isRecommand: false,
       isSent: false,
+      isFriend: false,
     };
   },
   computed: {
@@ -112,19 +126,32 @@ export default defineComponent({
       user: "Auth/userInfo",
       userProfile: "Profile/userProfile",
       sent: "Friend/sent",
+      friends: "Friend/friends",
     }),
     userData(): any {
       return this.userProfile;
     },
     sentD(): any {
       this.sent?.map((item: any) => {
+        console.log(item);
+
         if (item.id == this.userProfile.id) {
+          console.log(item.id);
+
           this.isSent = true;
-        } else {
-          this.isSent = false;
         }
       });
       return this.isSent;
+    },
+    friendss(): any {
+      this.friends?.map((item: any) => {
+        if (item.id == this.userProfile.id) {
+          console.log(item.id);
+
+          this.isFriend = true;
+        }
+      });
+      return this.isFriend;
     },
   },
   methods: {
@@ -133,16 +160,25 @@ export default defineComponent({
       addFrineds: "Friend/addFrined",
       getFreindData: "Friend/getFreindData",
     }),
-    addFriend() {
-      this.addFrineds({ myUser: this.user, frinedUser: this.userProfile });
+    async addFriend() {
+      await this.addFrineds({
+        myUser: this.user,
+        frinedUser: this.userProfile,
+      });
+      await this.getFreindData(this.user.id);
     },
   },
   async created() {
     let id = this.$route.params.id;
-    console.log(this.user);
-
     await this.getUserCv(id);
     await this.getFreindData(this.user.id);
+    this.$watch(
+      () => this.$route.params.id,
+      async () => {
+        gawait this.getUserCv(id);
+        await this.getFreindData(this.user.id);
+      }
+    );
   },
 });
 </script>
