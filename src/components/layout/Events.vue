@@ -1,5 +1,10 @@
 <template>
-  <FullCalendar :options="calendarOptions" />
+  <div v-if="isLoading" class="d-flex justify-content-center">
+    <MDBSpinner color="success" style="width: 5rem; height: 5rem"></MDBSpinner>
+  </div>
+  <div v-else>
+    <FullCalendar :options="calendarOptions" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -9,16 +14,34 @@ import FullCalendar from "@fullcalendar/vue3";
 
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+
+import { mapActions, mapGetters } from "vuex";
+
 export default defineComponent({
   components: {
     FullCalendar, // make the <FullCalendar> tag available
   },
 
   data() {
-    return {};
+    return { isLoading: false };
   },
   computed: {
+    ...mapGetters({
+      user: "Auth/userInfo",
+      eventTo: "Event/eventTo",
+    }),
+
     calendarOptions() {
+      let eventList = [] as any;
+
+      this.eventTo?.map((i: any) => {
+        eventList.push({
+          title: i.title,
+          backgroundColor: i?.backgroundColor ? i.backgroundColor : "#229f94",
+          start: i.startDate,
+          end: i.endDate,
+        });
+      });
       return {
         plugins: [dayGridPlugin, interactionPlugin],
         headerToolbar: {
@@ -26,16 +49,22 @@ export default defineComponent({
           center: "title",
           right: "dayGridMonth,dayGridWeek,dayGridDay",
         },
-        events: [
-          {
-            title: "Learn React section 1 and Section 2",
-            backgroundColor: "#229f94",
-            date: "2022-05-18",
-          },
-          { title: "event 2", date: "2022-05-21" },
-        ],
+
+        events: eventList,
       };
     },
+  },
+  methods: {
+    ...mapActions({
+      getEvent: "Event/getEvent",
+    }),
+  },
+  async created() {
+    let id = this.$route.params.id;
+
+    this.isLoading = true;
+    await this.getEvent(id);
+    this.isLoading = false;
   },
 });
 </script>

@@ -78,8 +78,6 @@ export default {
                 .get()
                 .then((snapshot: any) => {
                     const document: any = snapshot.data();
-                    console.log(document);
-
                     context.commit("setSend", document?.send);
                     context.commit("setRequest", document?.request);
                     context.commit("setfriends", document?.friends);

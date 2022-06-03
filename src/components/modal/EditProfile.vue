@@ -19,7 +19,7 @@
           stylePanelAspectRatio="1:1"
         />
       </div>
-      <label for="email" class="col-12">
+      <label for="email" class="col-12" v-if="user.role == 'student'">
         Phone Number:
         <input
           type="tel"

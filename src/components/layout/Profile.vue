@@ -1,5 +1,8 @@
 <template>
-  <div class="profile">
+  <div v-if="isLoading" class="d-flex justify-content-center">
+    <MDBSpinner color="success" style="width: 5rem; height: 5rem"></MDBSpinner>
+  </div>
+  <div class="profile" v-else>
     <section class="row profile-header border-bottom border-2 py-3">
       <div class="col-3">
         <p class="text-center rounded-circle name-section p-1">
@@ -34,7 +37,7 @@
           </div>
         </div>
         <h4>{{ userData.collage }} -{{ userData.major }}</h4>
-        <h4>
+        <h4 v-if="user.role !== 'doctor'">
           {{ userData.status }} -
           <span v-if="userData.status !== 'Student'"
             >from {{ userData?.gradYear }}</span
@@ -43,7 +46,7 @@
         </h4>
       </div>
       <div class="col-2 d-flex align-items-end">
-        <div v-if="user.role == 'doctor'">
+        <div v-if="user.role == 'doctor' && user.id !== userData.id">
           <BaseButton small @click="isRecommand = !isRecommand"
             >Recommended</BaseButton
           >
@@ -97,7 +100,7 @@
     v-model="isRecommand"
     centered
   >
-    <Recommand @close="isRecommand = false" />
+    <Recommand :userData="userData" @close="isRecommand = false" />
   </MDBModal>
 </template>
 
@@ -119,6 +122,7 @@ export default defineComponent({
       isRecommand: false,
       isSent: false,
       isFriend: false,
+      isLoading: false,
     };
   },
   computed: {
@@ -133,10 +137,8 @@ export default defineComponent({
     },
     sentD(): any {
       this.sent?.map((item: any) => {
-        console.log(item);
 
         if (item.id == this.userProfile.id) {
-          console.log(item.id);
 
           this.isSent = true;
         }
@@ -146,7 +148,6 @@ export default defineComponent({
     friendss(): any {
       this.friends?.map((item: any) => {
         if (item.id == this.userProfile.id) {
-          console.log(item.id);
 
           this.isFriend = true;
         }
@@ -169,14 +170,19 @@ export default defineComponent({
     },
   },
   async created() {
+    this.isLoading = true;
     let id = this.$route.params.id;
     await this.getUserCv(id);
     await this.getFreindData(this.user.id);
+    this.isLoading = false;
     this.$watch(
       () => this.$route.params.id,
       async () => {
+        this.isLoading = true;
+
         await this.getUserCv(id);
         await this.getFreindData(this.user.id);
+        this.isLoading = false;
       }
     );
   },

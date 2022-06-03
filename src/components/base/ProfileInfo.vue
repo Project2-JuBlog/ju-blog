@@ -4,7 +4,7 @@
       <h3 class="col-md-3 col-12">Email address :</h3>
       <h4 class="col">{{ userData.email }}</h4>
     </div>
-    <div class="row">
+    <div class="row" v-if="userData.role == 'student'">
       <h3 class="col-md-3 col-12">Phone number :</h3>
       <h4 class="col">{{ userData.phoneNumber }}</h4>
     </div>

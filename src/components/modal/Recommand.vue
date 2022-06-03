@@ -22,6 +22,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -29,11 +30,26 @@ export default defineComponent({
       RecommandData: "",
     };
   },
+  computed: {
+    ...mapGetters({
+      user: "Auth/userInfo",
+    }),
+  },
   methods: {
-    SendRecommanditon() {
-      console.log(this.RecommandData);
+    ...mapActions({
+      addRecommand: "Profile/addRecommand",
+    }),
+    async SendRecommanditon() {
+      await this.addRecommand({
+        user: this.user,
+        recomandation: this.RecommandData,
+        userData: this.userData,
+      });
+      this.RecommandData = "";
+      this.$emit("close");
     },
   },
+  props: ["userData"],
   emits: ["close"],
 });
 </script>

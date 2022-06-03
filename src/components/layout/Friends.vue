@@ -1,5 +1,7 @@
 <template>
-  <div v-if="isLoading">loading</div>
+  <div v-if="isLoading" class="d-flex justify-content-center">
+    <MDBSpinner color="success" style="width: 5rem; height: 5rem"></MDBSpinner>
+  </div>
   <div v-else>
     <div v-if="request && request.length > 0">
       <h4>Friend Requests</h4>
@@ -76,6 +78,7 @@
       </BaseCard2>
     </div>
   </div>
+  <div v-if="friends == null && request == null">Please Add Friend</div>
 </template>
 
 <script lang="ts">
@@ -103,7 +106,6 @@ export default defineComponent({
       deleteFriend: "Friend/deleteFriend",
     }),
     async acceptHandler(friendAccept: any) {
-      console.log(friendAccept);
 
       await this.acceptFriend({
         request: this.request,
@@ -135,12 +137,9 @@ export default defineComponent({
   },
   async created() {
     this.isLoading = true;
-    setTimeout(async () => {
-      // console.log(this.user);
-      await this.getFreindData(this.user.id);
-    }, 800);
-    // console.log(this.user);
+    const id = this.$route.params.id;
 
+    await this.getFreindData(id);
     this.isLoading = false;
   },
 });

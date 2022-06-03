@@ -8,6 +8,7 @@
         Event Cover Image:
         <file-pond
           name="test"
+          ref="pond"
           class-name="my-pond"
           label-idle="uploade Image"
           accepted-file-types="image/jpeg, image/png,image/gif,image/jpg"
@@ -88,11 +89,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import vueFilePond from "vue-filepond";
-
+import firebase from "firebase/compat/app";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import { mapActions, mapGetters } from "vuex";
 const FilePond: any = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview
@@ -108,25 +110,43 @@ export default defineComponent({
         url: "",
         date: "",
         group: "",
-        myFiles: "",
+        myFiles: "tt" as any,
         about: "",
       },
-      userGroup: [
-        { name: "KASIT", id: 1 },
-        { name: "CIS", id: 2 },
-      ],
+      url: "",
     };
   },
   emits: ["close"],
+  computed: {
+    ...mapGetters({
+      user: "Auth/userInfo",
+    }),
+    userGroup(): any {
+      return this.user.groups;
+    },
+  },
   components: {
     FilePond,
   },
   methods: {
+    ...mapActions({
+      AddGeneralEvent: "Event/AddGeneralEvent",
+    }),
     handleFilePondInit(event: any) {
       this.event.myFiles = event.target.files[0];
     },
-    eventHandler() {
-      console.log(this.event);
+    async eventHandler() {
+
+      await this.AddGeneralEvent({ user: this.user, event: this.event });
+      this.$emit("close");
+      this.event.title = "";
+      this.event.type = "";
+      this.event.location = "";
+      this.event.url = "";
+      this.event.date = "";
+      this.event.group = "";
+      this.event.about = "";
+      this.event.myFiles = "";
     },
   },
 });

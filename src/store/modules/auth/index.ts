@@ -52,43 +52,77 @@ export default {
             const groups = [];
             groups.push(payload.major);
             groups.push(payload.collage);
-            db.collection("users").doc(state.user.userId).set({
-                id: state.user.userId,
-                role: payload.role,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-                phoneNumber: payload.phoneNumber,
-                email: payload.email,
-                collage: payload.collage.name,
-                major: payload.major.name,
-                gradYear: payload.gradYear,
-                status: payload.status,
-                acadYear: payload.acadYear,
-                groups: groups,
-                file: ""
+            if (payload.role == 'doctor') {
+                db.collection("users").doc(state.user.userId).set({
+                    id: state.user.userId,
+                    role: payload.role,
+                    firstName: payload.firstName,
+                    lastName: payload.lastName,
+                    email: payload.email,
+                    collage: payload.collage.name,
+                    major: payload.major.name,
+                    groups: groups,
+                    file: ""
 
-            })
-            db.collection("cv").doc(state.user.userId).set({
-                id: state.user.userId,
-                role: payload.role,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-                phoneNumber: payload.phoneNumber,
-                email: payload.email,
-                collage: payload.collage.name,
-                major: payload.major.name,
-                gradYear: payload.gradYear,
-                status: payload.status,
-                acadYear: payload.acadYear,
-                file: "",
-                Certificate: [],
-                experiense: [],
-                languages: [],
-                recommendation: [],
-                skills: [],
-                volunteer: []
+                })
+                db.collection("cv").doc(state.user.userId).set({
+                    id: state.user.userId,
+                    role: payload.role,
+                    firstName: payload.firstName,
+                    lastName: payload.lastName,
+                    email: payload.email,
+                    collage: payload.collage.name,
+                    major: payload.major.name,
+                    file: "",
+                    Certificate: [],
+                    experiense: [],
+                    languages: [],
+                    recommendation: [],
+                    skills: [],
+                    volunteer: []
 
-            })
+                })
+            }
+            else {
+                db.collection("users").doc(state.user.userId).set({
+                    id: state.user.userId,
+                    role: payload.role,
+                    firstName: payload.firstName,
+                    lastName: payload.lastName,
+                    phoneNumber: payload.phoneNumber,
+                    email: payload.email,
+                    collage: payload.collage.name,
+                    major: payload.major.name,
+                    gradYear: payload.gradYear,
+                    status: payload.status,
+                    acadYear: payload.acadYear,
+                    groups: groups,
+                    file: ""
+
+                })
+                db.collection("cv").doc(state.user.userId).set({
+                    id: state.user.userId,
+                    role: payload.role,
+                    firstName: payload.firstName,
+                    lastName: payload.lastName,
+                    phoneNumber: payload.phoneNumber,
+                    email: payload.email,
+                    collage: payload.collage.name,
+                    major: payload.major.name,
+                    gradYear: payload.gradYear,
+                    status: payload.status,
+                    acadYear: payload.acadYear,
+                    file: "",
+                    Certificate: [],
+                    experiense: [],
+                    languages: [],
+                    recommendation: [],
+                    skills: [],
+                    volunteer: []
+
+                })
+            }
+
             for (let i = 0; i < groups.length; i++) {
 
                 db.collection("GroupMember").doc(groups[i].id).update({
@@ -98,7 +132,7 @@ export default {
                         image: "",
                         lname: payload.lastName,
                         role: payload.role,
-                        status: payload.status
+                        status: payload.role == 'student' ? payload.status : 'doctor'
                     })
                 })
             }
@@ -106,8 +140,8 @@ export default {
 
 
 
-            if (payload.role == "student") {
-                router.push({ name: "Feed" });
+            if (payload.role == "student" && payload.role == "doctor") {
+                router.push({ name: "Feed", params: { id: state.user.userId } });
             }
 
 
@@ -133,7 +167,6 @@ export default {
             await context.dispatch("auth", { ...payload, mode: "login" });
 
 
-            router.push({ name: "Feed" });
 
         },
 
@@ -179,6 +212,10 @@ export default {
                 token: login.data.idToken,
                 tokenExpiration: expirestionDate,
             });
+            if (mode !== "signup") {
+                router.push({ name: "Feed", params: { id: login.data.localId } });
+
+            }
         },
         tryLogin(context: any) {
             const token = localStorage.getItem('token')

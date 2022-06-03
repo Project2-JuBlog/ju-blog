@@ -12,7 +12,7 @@
       </div>
       <div class="col-12 col-lg-6 col-xl-3" v-if="!inChat && !inEvent">
         <section class="px-md-5 mx-md-4 px-2 mx-2">
-          <EventSide></EventSide>
+          <EventSide :id="user"></EventSide>
           <ImportantLink></ImportantLink>
         </section>
       </div>
@@ -23,7 +23,7 @@
             >Add Event</base-button
           >
           <base-button
-            v-if="user.role == 'company'"
+            v-if="user.role !== 'student'"
             class="mb-5 mx-3"
             @click="openGeneralEvent = !openGeneralEvent"
             >Add General Event</base-button

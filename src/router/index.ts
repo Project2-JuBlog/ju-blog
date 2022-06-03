@@ -51,25 +51,25 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import("@/pages/student/Home.vue"),
     children: [{
-      path: "feed",
+      path: "feed/:id",
       name: "Feed",
       component: () =>
         import("@/components/layout/Feed.vue"),
     },
     {
-      path: "friends",
+      path: "friends/:id",
       name: "Friends",
       component: () =>
         import("@/components/layout/Friends.vue"),
     },
     {
-      path: "events",
+      path: "events/:id",
       name: "Events",
       component: () =>
         import("@/components/layout/Events.vue"),
     },
     {
-      path: "saved",
+      path: "saved/:id",
       name: "Saved",
       component: () =>
         import("@/components/layout/Saved.vue"),

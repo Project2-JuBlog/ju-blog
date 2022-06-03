@@ -41,6 +41,7 @@ export default {
     async Addpost(state: any, payload: any) {
       const posts = state.group.posts;
       let id = "_" + Math.random().toString(36).substr(2, 9);
+      console.log(payload);
 
       let newPost = {
         groupId: state.group.id,
@@ -54,9 +55,11 @@ export default {
           id: payload.userInfo.id,
           image: "",
           lname: payload.userInfo.lastName,
-          status: payload.userInfo.status,
+          status: payload.userInfo.role == 'student' ? payload.userInfo.status : payload.userInfo.role,
         },
       };
+
+      console.log(newPost);
 
       posts.push(newPost);
 
@@ -198,7 +201,7 @@ export default {
     },
 
     async likePost(context: any, payload: any) {
-   
+
       let allpost = payload.posts;
 
       const index = allpost.findIndex((post: any) => post.id == payload.postId);
@@ -218,7 +221,7 @@ export default {
         .collection("groups")
         .doc(payload.groupId.toString())
         .update({ posts: allpost })
-       
+
     },
     async removelikePost(context: any, payload: any) {
       let allpost = payload.posts;

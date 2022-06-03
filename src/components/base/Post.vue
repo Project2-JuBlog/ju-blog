@@ -14,20 +14,20 @@
             /> -->
           </div>
           <div class="name-post">
-            <router-link :to="'/home/profile/' + post.user.id">
+            <router-link :to="'/home/profile/' + post?.user?.id">
               <p class="p-0 m-0 fw-bold">
-                {{ post.user.fname + " " + post.user.lname }}
+                {{ post?.user?.fname + " " + post?.user?.lname }}
               </p>
             </router-link>
             <p class="p-0 m-0">
-              <span class="post-group-name me-2">{{ post.user.status }}</span>
+              <span class="post-group-name me-2">{{ post?.user?.status }}</span>
               <span class="post-date"
-                >{{ moment(post.createdAt).format("DD-MM-YYYY") }}
+                >{{ moment(post?.createdAt).format("DD-MM-YYYY") }}
               </span>
             </p>
           </div>
         </div>
-        <div class="dropdown" v-if="post.user.id == user.id">
+        <div class="dropdown" v-if="post?.user?.id == user?.id">
           <div
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -66,7 +66,7 @@
       <!-- Post Footer -->
       <div class="d-flex justify-content-between mt-3">
         <div role="button" @click.prevent="islikesOpen = true">
-          {{ post.likes.length }} likes
+          {{ post?.likes?.length }} likes
         </div>
         <div role="button" @click.prevent="openComment = true">comment</div>
       </div>
@@ -210,14 +210,12 @@ export default defineComponent({
     },
     SavedPost() {
       if (this.isSaved == false) {
-
         this.savedpost({
           post: this.post,
           savedpost: this.savedpostd,
           user: this.user,
         });
       } else {
-
         this.Removesavedpost({
           post: this.post,
           savedpost: this.savedpostd,

@@ -2,19 +2,24 @@
   <section class="mt-5">
     <div
       class="row mb-4 recomandation-section border-bottom border-2 pb-4"
-      v-for="recomandation in recommendationData"
+      v-for="recomandation in userData"
       :key="recomandation.name"
     >
       <div class="col-2">
-        <img
+        <p class="text-center rounded-circle name-sections p-1">
+          {{ recomandation.RecommandBy.firstName }}
+        </p>
+        <!-- <img
           :src="recomandation.img"
           class="recomandation-img"
           width="120"
           height="120"
-        />
+        /> -->
       </div>
       <div class="col-10">
-        <p class="recomandation-name px-3 mt-2">{{ recomandation.name }}</p>
+        <p class="recomandation-name px-3 mt-2">
+          {{ recomandation.RecommandBy.firstName }}
+        </p>
 
         <p class="px-3">{{ recomandation.description }}</p>
       </div>
@@ -26,6 +31,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+  props: ["userData"],
   data() {
     return {
       recommendationData: [
@@ -47,7 +53,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/sass/main";
 .recomandation {
   &-img {
@@ -60,5 +66,17 @@ export default defineComponent({
     font-weight: 400;
     line-height: 29px;
   }
+}
+.name-sections {
+  color: white;
+  background-color: $color-button;
+  width: 110px;
+  height: 110px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  word-break: break-all;
 }
 </style>
