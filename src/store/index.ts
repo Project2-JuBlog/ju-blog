@@ -5,10 +5,11 @@ import Profile from './modules/profile/index'
 import Event from './modules/event/index'
 import Friend from './modules/friend/index'
 import Feed from './modules/feed/index'
+import Search from './modules/search/index'
 export default createStore({
   state: {},
   getters: {},
   mutations: {},
   actions: {},
-  modules: { Auth, Group, Profile, Friend, Event, Feed },
+  modules: { Auth, Group, Profile, Friend, Event, Feed, Search },
 });

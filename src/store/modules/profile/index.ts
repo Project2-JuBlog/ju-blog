@@ -85,7 +85,7 @@ export default {
                     firstName: payload.user.firstName,
                     file: payload.user.file,
                     lastName: payload.user.lastName,
-                    major: payload.user.major,
+                    major: payload.user.role == 'company' ? '' : payload.user.major,
                     collage: payload.user.collage,
                 },
             };

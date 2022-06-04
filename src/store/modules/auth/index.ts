@@ -50,98 +50,142 @@ export default {
         },
         setUserInfo(state: any, payload: any) {
             const groups = [];
-            groups.push(payload.major);
-            groups.push(payload.collage);
-            if (payload.role == 'doctor') {
+            if (payload.role == 'company') {
+                groups.push(payload.collage.traning);
                 db.collection("users").doc(state.user.userId).set({
                     id: state.user.userId,
                     role: payload.role,
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
+                    firstName: payload.name,
+                    lastName: "",
+
                     email: payload.email,
-                    collage: payload.collage.name,
-                    major: payload.major.name,
+                    collage: payload.collage.traning.name,
                     groups: groups,
-                    file: ""
+                    file: "",
+                    isActivate: false
 
                 })
+
                 db.collection("cv").doc(state.user.userId).set({
                     id: state.user.userId,
                     role: payload.role,
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
+                    firstName: payload.name,
+                    lastName: "",
                     email: payload.email,
-                    collage: payload.collage.name,
-                    major: payload.major.name,
+                    collage: payload.collage.traning.name,
                     file: "",
-                    Certificate: [],
-                    experiense: [],
-                    languages: [],
-                    recommendation: [],
-                    skills: [],
-                    volunteer: []
-
+                    isActivate: false
                 })
-            }
-            else {
-                db.collection("users").doc(state.user.userId).set({
-                    id: state.user.userId,
-                    role: payload.role,
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
-                    phoneNumber: payload.phoneNumber,
-                    email: payload.email,
-                    collage: payload.collage.name,
-                    major: payload.major.name,
-                    gradYear: payload.gradYear,
-                    status: payload.status,
-                    acadYear: payload.acadYear,
-                    groups: groups,
-                    file: ""
+                for (let i = 0; i < groups.length; i++) {
 
-                })
-                db.collection("cv").doc(state.user.userId).set({
-                    id: state.user.userId,
-                    role: payload.role,
-                    firstName: payload.firstName,
-                    lastName: payload.lastName,
-                    phoneNumber: payload.phoneNumber,
-                    email: payload.email,
-                    collage: payload.collage.name,
-                    major: payload.major.name,
-                    gradYear: payload.gradYear,
-                    status: payload.status,
-                    acadYear: payload.acadYear,
-                    file: "",
-                    Certificate: [],
-                    experiense: [],
-                    languages: [],
-                    recommendation: [],
-                    skills: [],
-                    volunteer: []
-
-                })
-            }
-
-            for (let i = 0; i < groups.length; i++) {
-
-                db.collection("GroupMember").doc(groups[i].id).update({
-                    memebers: firebase.firestore.FieldValue.arrayUnion({
-                        fname: payload.firstName,
-                        id: state.user.userId,
-                        image: "",
-                        lname: payload.lastName,
-                        role: payload.role,
-                        status: payload.role == 'student' ? payload.status : 'doctor'
+                    db.collection("GroupMember").doc(groups[i].id).set({
+                        memebers: firebase.firestore.FieldValue.arrayUnion({
+                            firstName: payload.name,
+                            lastName: "",
+                            id: state.user.userId,
+                            image: "",
+                            role: payload.role,
+                        }, { merge: true }),
                     })
-                })
-            }
+                }
+            } else {
+                groups.push(payload.major);
+                groups.push(payload.collage);
+                groups.push(payload.collage.traning);
+                if (payload.role == 'doctor') {
+                    db.collection("users").doc(state.user.userId).set({
+                        id: state.user.userId,
+                        role: payload.role,
+                        firstName: payload.firstName,
+                        lastName: payload.lastName,
+                        email: payload.email,
+                        collage: payload.collage.name,
+                        major: payload.major.name,
+                        groups: groups,
+                        file: ""
 
+                    })
+                    db.collection("cv").doc(state.user.userId).set({
+                        id: state.user.userId,
+                        role: payload.role,
+                        firstName: payload.firstName,
+                        lastName: payload.lastName,
+                        email: payload.email,
+                        collage: payload.collage.name,
+                        major: payload.major.name,
+                        file: "",
+                        Certificate: [],
+                        experiense: [],
+                        languages: [],
+                        recommendation: [],
+                        skills: [],
+                        volunteer: []
+
+                    })
+                }
+                else {
+                    db.collection("users").doc(state.user.userId).set({
+                        id: state.user.userId,
+                        role: payload.role,
+                        firstName: payload.firstName,
+                        lastName: payload.lastName,
+                        phoneNumber: payload.phoneNumber,
+                        email: payload.email,
+                        collage: payload.collage.name,
+                        major: payload.major.name,
+                        gradYear: payload.gradYear,
+                        status: payload.status,
+                        acadYear: payload.acadYear,
+                        groups: groups,
+                        file: ""
+
+                    })
+                    db.collection("cv").doc(state.user.userId).set({
+                        id: state.user.userId,
+                        role: payload.role,
+                        firstName: payload.firstName,
+                        lastName: payload.lastName,
+                        phoneNumber: payload.phoneNumber,
+                        email: payload.email,
+                        collage: payload.collage.name,
+                        major: payload.major.name,
+                        gradYear: payload.gradYear,
+                        status: payload.status,
+                        acadYear: payload.acadYear,
+                        file: "",
+                        Certificate: [],
+                        experiense: [],
+                        languages: [],
+                        recommendation: [],
+                        skills: [],
+                        volunteer: []
+
+                    })
+                }
+
+                for (let i = 0; i < groups.length; i++) {
+
+                    db.collection("GroupMember").doc(groups[i].id).update({
+                        memebers: firebase.firestore.FieldValue.arrayUnion({
+                            fname: payload.firstName,
+                            id: state.user.userId,
+                            image: "",
+                            lname: payload.lastName,
+                            role: payload.role,
+                            status: payload.role == 'student' ? payload.status : 'doctor'
+                        })
+                    })
+                }
+            }
 
 
 
             if (payload.role == "student" && payload.role == "doctor") {
                 router.push({ name: "Feed", params: { id: state.user.userId } });
+            }
+            else {
+                router.push({ name: "HomeCompany" });
+
             }
 
 

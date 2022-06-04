@@ -1,6 +1,6 @@
 <template>
   <MDBModalHeader>
-    <MDBModalTitle id="exampleModalLabel"> People Who Likes </MDBModalTitle>
+    <MDBModalTitle id="exampleModalLabel"> People Who Enroll </MDBModalTitle>
   </MDBModalHeader>
   <MDBModalBody>
     <div>

@@ -37,7 +37,7 @@
           </div>
         </div>
         <h4>{{ userData.collage }} -{{ userData.major }}</h4>
-        <h4 v-if="user.role !== 'doctor'">
+        <h4 v-if="userData.role !== 'doctor' && userData.role !== 'company'">
           {{ userData.status }} -
           <span v-if="userData.status !== 'Student'"
             >from {{ userData?.gradYear }}</span
@@ -46,13 +46,18 @@
         </h4>
       </div>
       <div class="col-2 d-flex align-items-end">
-        <div v-if="user.role == 'doctor' && user.id !== userData.id">
+        <div
+          v-if="
+            (user.role == 'doctor' || user.role == 'company') &&
+            user.id !== userData.id
+          "
+        >
           <BaseButton small @click="isRecommand = !isRecommand"
             >Recommended</BaseButton
           >
         </div>
         <img
-          v-else-if="user.id == userData.id"
+          v-else-if="user.id == userData.id && userData.role !== 'company'"
           src="@/assets/img/edit.svg"
           @click="isEdit = !isEdit"
           class="img-edit"
@@ -60,7 +65,7 @@
         />
       </div>
     </section>
-    <div class="profile-content mt-5">
+    <div class="profile-content mt-5" v-if="userData.role !== 'company'">
       <MDBTabs v-model="activeTabId3">
         <!-- Tabs navs -->
         <MDBTabNav fill tabsClasses="mb-3">
@@ -137,9 +142,7 @@ export default defineComponent({
     },
     sentD(): any {
       this.sent?.map((item: any) => {
-
         if (item.id == this.userProfile.id) {
-
           this.isSent = true;
         }
       });
@@ -148,7 +151,6 @@ export default defineComponent({
     friendss(): any {
       this.friends?.map((item: any) => {
         if (item.id == this.userProfile.id) {
-
           this.isFriend = true;
         }
       });

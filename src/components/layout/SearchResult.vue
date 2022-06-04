@@ -1,20 +1,54 @@
 <template>
-  <div class="col-12">
+  <div class="col-12 g-0">
     <p class="rounded-pill tags col-2 text-center my-3">{{ searchQ }}</p>
-    <Friends />
+    <div v-if="isLoading" class="d-flex justify-content-center">
+      <MDBSpinner
+        color="success"
+        style="width: 5rem; height: 5rem"
+      ></MDBSpinner>
+    </div>
+    <div v-else class="g-0">
+      <div v-if="searchResult.length > 0" class="row">
+        <div
+          v-for="result in searchResult"
+          :key="result.id"
+          class="col-12 col-md-6 g-0 p-0 m-0"
+        >
+          <ProfileCard :user="result" />
+        </div>
+      </div>
+      <div v-else>There is no one with these Skills</div>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import Friends from "@/components/layout/Friends.vue";
+import { mapActions, mapGetters } from "vuex";
+import ProfileCard from "./ProfileCard.vue";
 export default defineComponent({
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
+  components: { ProfileCard },
   computed: {
+    ...mapGetters({
+      searchResult: "Search/searchResult",
+    }),
     searchQ(): any {
       return this.$route.params.searchQuery;
     },
   },
-  components: {
-    Friends,
+
+  methods: {
+    ...mapActions({ getSearchResult: "Search/getSearchResult" }),
+  },
+  async created() {
+    this.isLoading = true;
+
+    await this.getSearchResult(this.searchQ);
+    this.isLoading = false;
   },
 });
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="user.role !== 'company'">
+  <section v-if="user.role !== 'company' && events.length > 0">
     <span class="px-5"> General Events</span>
     <BaseCard>
       <section class="py-2">

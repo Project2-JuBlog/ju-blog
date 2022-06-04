@@ -68,6 +68,40 @@ export default {
         .doc(payload.groupId.toString())
         .update({ posts: posts });
     },
+
+    async AddJobpost(state: any, payload: any) {
+      const posts = state.group.posts;
+      let id = "_" + Math.random().toString(36).substr(2, 9);
+      console.log(payload);
+
+      let newPost = {
+        groupId: state.group.id,
+        content: payload.content,
+        createdAt: payload.createdAt.toString(),
+        file: "",
+        likes: [],
+        id: id.toString(),
+        user: {
+          fname: payload.userInfo.firstName,
+          id: payload.userInfo.id,
+          image: "",
+          lname: payload.userInfo.lastName,
+          status: payload.userInfo.role == 'student' ? payload.userInfo.status : payload.userInfo.role,
+        },
+      };
+
+      console.log(newPost);
+
+      posts.push(newPost);
+
+      await db
+        .collection("groups")
+        .doc(payload.groupId.toString())
+        .update({ posts: posts });
+    },
+
+
+
     async AddComment(state: any, payload: any) {
       let id = "_" + Math.random().toString(36).substr(2, 9);
 
