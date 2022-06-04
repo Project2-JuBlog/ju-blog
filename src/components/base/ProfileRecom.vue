@@ -7,7 +7,7 @@
     >
       <div class="col-2">
         <p class="text-center rounded-circle name-sections p-1">
-          {{ recomandation.RecommandBy.firstName }}
+          {{ recomandation.RecommandBy.firstName.charAt(0) }}
         </p>
         <!-- <img
           :src="recomandation.img"
@@ -71,6 +71,7 @@ export default defineComponent({
   color: white;
   background-color: $color-button;
   width: 110px;
+  font-size: 3rem;
   height: 110px;
   font-size: 2rem;
   display: flex;

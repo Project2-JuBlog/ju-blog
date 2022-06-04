@@ -53,11 +53,36 @@
           <option value="internship">Internship</option>
         </select>
       </label>
+      <div class="row">
+        <label class="col-11">
+          Skills :
+          <div v-for="skill in skillsCounter" :key="skill" class="input-field">
+            <input
+              class="form-control mb-2"
+              type="text"
+              v-model="skills[skill - 1]"
+            />
+            <img
+              src="@/assets/img/close.svg"
+              @click="removeSkills(skill - 1)"
+              class="img-close"
+            />
+          </div>
+        </label>
+        <div class="col-1 align-self-center mt-2">
+          <img
+            src="@/assets/img/plus.svg"
+            @click="skillsCounter++"
+            width="15"
+            height="15"
+          />
+        </div>
+      </div>
     </form>
   </MDBModalBody>
   <MDBModalFooter class="btns">
     <button class="btn colses" @click="$emit('close')">Close</button>
-    <MDBBtn class="btn save" @click.prevent="AddEvent">Create</MDBBtn>
+    <MDBBtn class="btn save" @click.prevent="createJob">Create</MDBBtn>
   </MDBModalFooter>
 </template>
 <script lang="ts">
@@ -72,6 +97,8 @@ export default defineComponent({
       description: "",
       location: "",
       companyName: "",
+      skills: [],
+      skillsCounter: 1,
     };
   },
   computed: {
@@ -81,8 +108,34 @@ export default defineComponent({
   },
   methods: {
     ...mapActions({
-      SetEvent: "Event/SetEvent",
+      Addjobpost: "Group/Addjobpost",
     }),
+    async createJob() {
+      let date = new Date();
+
+      await this.Addjobpost({
+        user: this.user,
+        post: {
+          title: this.title,
+          type: this.type,
+          description: this.description,
+          location: this.location,
+          companyName: this.companyName,
+          skills: this.skills,
+        },
+        createdAt: date,
+      });
+      this.title = "";
+      this.type = "full-time";
+      this.description = "";
+      this.location = "";
+      this.companyName = "";
+      this.$emit("close");
+    },
+    removeSkills(item: any) {
+      this.skills.splice(item, 1);
+      this.skillsCounter--;
+    },
   },
   emits: ["close"],
 });
@@ -92,9 +145,23 @@ export default defineComponent({
 .colses {
   background-color: $color-button;
   color: $color-white;
+  width: 150px;
+  height: 30px;
 }
 .save {
   border: 1px solid $color-button;
   color: $color-button;
+  width: 150px;
+  height: 30px;
+}
+.input-field {
+  position: relative;
+}
+
+.img-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
 }
 </style>

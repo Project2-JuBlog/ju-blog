@@ -3,38 +3,12 @@
     <div class="container header__navbar">
       <div class="row py-3">
         <div
-          class="d-flex justify-content-md-around justify-content-between align-items-center"
+          class="d-flex justify-content-md-between justify-content-between align-items-center"
         >
           <div><img src="@/assets/img/navbar-img.png" width="150" /></div>
-          <div class="search-bar d-none d-md-block">
-            <img
-              src="@/assets/img/search-icon.svg"
-              width="15"
-              class="search-icon"
-            />
-            <input
-              type="search"
-              placeholder="Search Here"
-              class="form-control"
-            />
-          </div>
 
           <div @click.prevent="logoutHandler" class="cursor">
             <img src="@/assets/img/log-out.svg" width="30" height="30" />
-          </div>
-        </div>
-        <div class="mt-2 d-flex justify-content-center d-block d-md-none">
-          <div class="search-bar">
-            <img
-              src="@/assets/img/search-icon.svg"
-              width="15"
-              class="search-icon"
-            />
-            <input
-              type="search"
-              placeholder="Search Here"
-              class="form-control"
-            />
           </div>
         </div>
       </div>

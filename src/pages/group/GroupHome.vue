@@ -5,7 +5,7 @@
       <div v-if="user.role == 'doctor' || user.role == 'company'">
         <JobPost />
       </div>
-      <div class="post">all posts</div>
+      <JopPosts :posts="groupData.posts" />
     </div>
     <div v-else>
       <CreatePost :groupId="id" :postId="groupData.id" />
@@ -21,6 +21,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import GroupPost from "@/components/base/GroupPost.vue";
+import JopPosts from "@/components/base/JopPosts.vue";
 import CreatePost from "@/components/base/CreatePost.vue";
 import JobPost from "@/components/base/JobPost.vue";
 import GerenralEventSide from "@/components/header/GerenralEventSide.vue";
@@ -31,6 +32,7 @@ export default defineComponent({
   components: {
     GroupPost,
     JobPost,
+    JopPosts,
     CreatePost,
     GerenralEventSide,
     ImportantLink,

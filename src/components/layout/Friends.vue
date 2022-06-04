@@ -106,7 +106,6 @@ export default defineComponent({
       deleteFriend: "Friend/deleteFriend",
     }),
     async acceptHandler(friendAccept: any) {
-
       await this.acceptFriend({
         request: this.request,
         friends: this.friends,

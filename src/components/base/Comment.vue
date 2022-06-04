@@ -4,7 +4,7 @@
       <router-link :to="'/home/profile/' + comment.user.id">
         <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
         <p class="text-center rounded-circle name-section p-1">
-          {{ comment.user.fname }}
+          {{ comment.user.fname.charAt(0) }}
         </p>
       </router-link>
     </div>
@@ -78,6 +78,7 @@ export default defineComponent({
   background-color: $color-button;
   width: 60px;
   height: 60px;
+  font-size: 3rem;
   display: flex;
   align-items: center;
   justify-items: center;

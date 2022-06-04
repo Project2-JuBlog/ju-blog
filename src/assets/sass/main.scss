@@ -12,3 +12,7 @@ a {
         color: $gray;
     }
 }
+.name-section,
+.name-sections {
+    text-transform: capitalize;
+}

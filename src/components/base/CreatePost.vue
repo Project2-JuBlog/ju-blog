@@ -4,7 +4,7 @@
       <div class="mx-2">
         <!-- <img src="@/assets/img/rawanimage.png" width="55" height="55" /> -->
         <p class="text-center rounded-circle name-section p-1">
-          {{ userInfo.firstName }}
+          {{ userInfo.firstName.charAt(0) }}
         </p>
       </div>
       <div class="py-1 w-100">
@@ -90,6 +90,7 @@ export default defineComponent({
 }
 .name-section {
   color: white;
+  font-size: 3rem;
   background-color: $color-button;
   width: 60px;
   height: 60px;

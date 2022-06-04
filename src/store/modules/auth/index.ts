@@ -183,7 +183,7 @@ export default {
             if (payload.role == "student" && payload.role == "doctor") {
                 router.push({ name: "Feed", params: { id: state.user.userId } });
             }
-            else {
+            else if (payload.role == 'company') {
                 router.push({ name: "HomeCompany" });
 
             }

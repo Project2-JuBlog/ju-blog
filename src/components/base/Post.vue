@@ -129,7 +129,12 @@
     v-model="islikesOpen"
     centered
   >
-    <ListLike :likes="post.likes" @close="islikesOpen = false" />
+    <ListLike
+      :likes="post.likes"
+      @close="islikesOpen = false"
+      noList="No one like your post"
+      title="People Who Likes"
+    />
   </MDBModal>
 
   <MDBModal

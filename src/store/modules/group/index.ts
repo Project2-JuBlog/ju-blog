@@ -73,30 +73,27 @@ export default {
       const posts = state.group.posts;
       let id = "_" + Math.random().toString(36).substr(2, 9);
       console.log(payload);
+      console.log(posts);
+      console.log(state.group.id);
 
       let newPost = {
         groupId: state.group.id,
-        content: payload.content,
         createdAt: payload.createdAt.toString(),
-        file: "",
         likes: [],
         id: id.toString(),
         user: {
-          fname: payload.userInfo.firstName,
-          id: payload.userInfo.id,
+          fname: payload.user.firstName,
+          id: payload.user.id,
           image: "",
-          lname: payload.userInfo.lastName,
-          status: payload.userInfo.role == 'student' ? payload.userInfo.status : payload.userInfo.role,
+          lname: payload.user.lastName,
         },
+        job: payload.post
+
       };
-
-      console.log(newPost);
-
       posts.push(newPost);
-
       await db
         .collection("groups")
-        .doc(payload.groupId.toString())
+        .doc(state.group.id)
         .update({ posts: posts });
     },
 
@@ -185,6 +182,9 @@ export default {
     },
     async Addpost(context: any, payload: any) {
       context.commit("Addpost", payload);
+    },
+    async Addjobpost(context: any, payload: any) {
+      context.commit("AddJobpost", payload);
     },
     async Addcomments(context: any, payload: any) {
       context.commit("AddComment", payload);

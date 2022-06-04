@@ -1,6 +1,6 @@
 <template>
   <MDBModalHeader>
-    <MDBModalTitle id="exampleModalLabel"> People Who Likes </MDBModalTitle>
+    <MDBModalTitle id="exampleModalLabel"> {{ title }} </MDBModalTitle>
   </MDBModalHeader>
   <MDBModalBody>
     <div>
@@ -19,7 +19,7 @@
         </router-link>
       </div>
       <div v-if="likes.length == 0">
-        <p>No One Like Your Post</p>
+        <p>{{ noList }}</p>
       </div>
     </div>
   </MDBModalBody>
@@ -31,7 +31,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ["likes"],
+  props: ["likes", "title", "noList"],
   emits: ["close"],
 });
 </script>
