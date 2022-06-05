@@ -2,6 +2,7 @@ import axios from "../../../axios";
 import router from "../../../router";
 import db from "../../../firebase";
 import firebase from "firebase/compat/app";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default {
     namespaced: true,
@@ -19,6 +20,8 @@ export default {
         },
         async editUserInfo(state: any, payload: any) {
             let userdata = state.userProfile;
+            console.log(payload.info.myFiles);
+
             let newProfileInfor = {
                 id: userdata.id,
                 role: userdata.role,
@@ -31,7 +34,7 @@ export default {
                 gradYear: userdata.role == 'student' ? userdata.gradYear : "",
                 status: userdata.role == 'student' ? userdata.status : "",
                 acadYear: userdata.role == 'student' ? userdata.acadYear : "",
-                file: payload.info.myFiles,
+                file: userdata.file,
                 Certificate: payload.info.certificate,
                 experiense: payload.info.experience,
                 languages: payload.info.language,
@@ -39,9 +42,25 @@ export default {
                 skills: payload.info.skills,
                 volunteer: payload.info.volunteer,
             };
+            const metadata = {
+                contentType: payload.info.myFiles.type,
+            };
+            console.log(payload.info.myFiles);
 
+            const storage = getStorage();
+            const imageRef = ref(storage, 'images/' + payload.info.myFiles.name);
+            await uploadBytesResumable(imageRef, payload.info.myFiles, metadata).then((snapshot) => {
+                console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                console.log('File metadata:', snapshot.metadata);
+                getDownloadURL(snapshot.ref).then((url) => {
+                    newProfileInfor.file = url.toString();
+                    console.log(newProfileInfor.file);
+
+                });
+            }).catch((error) => {
+                console.error('Upload failed', error);
+            });
             console.log(newProfileInfor);
-
             await db
                 .collection("cv")
                 .doc(payload.id)
@@ -51,12 +70,12 @@ export default {
                     if (userdata.role == 'student') {
                         db.collection("users").doc(payload.id).update({
                             phoneNumber: payload.info.phone,
-                            file: payload.info.myFiles,
+                            file: newProfileInfor.file,
                         });
                     }
                     else {
                         db.collection("users").doc(payload.id).update({
-                            file: payload.info.myFiles,
+                            file: newProfileInfor.file,
                         });
                     }
                 });

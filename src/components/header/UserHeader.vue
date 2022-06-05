@@ -49,11 +49,6 @@
           >Saved</router-link
         >
       </li>
-      <li class="list-chat">
-        <router-link :to="{ name: 'PrivateChat' }" active-class="active-list"
-          >Private Chat</router-link
-        >
-      </li>
     </ul>
   </BaseCard>
 </template>

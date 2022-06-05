@@ -2,6 +2,7 @@ import axios from "../../../axios";
 import router from "../../../router";
 import db from "../../../firebase";
 import firebase from "firebase/compat/app";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default {
     namespaced: true,
@@ -31,8 +32,8 @@ export default {
                 .collection("eventToDo")
                 .doc(payload)
                 .get()
-                .then((snapshot: any) => {
-                    const document: any = snapshot.data();
+                .then((snapshot) => {
+                    const document = snapshot.data();
                     context.commit("setEvent", document?.events);
                 });
         },
@@ -52,6 +53,35 @@ export default {
         },
         async AddGeneralEvent(context: any, payload: any) {
             let id = "_" + Math.random().toString(36).substr(2, 9);
+            const metadata = {
+                contentType: payload.event.myFiles.type,
+            };
+            let link = "";
+            let eventGeneral = {
+                title: payload.event.title,
+                type: payload.event.type,
+                location: payload.event.location,
+                url: payload.event.url,
+                date: payload.event.date,
+                group: payload.event.group,
+                myFiles: link,
+                about: payload.event.about
+
+            }
+            const storage = getStorage();
+            const imageRef = ref(storage, 'images/' + payload.event.myFiles.name);
+            await uploadBytesResumable(imageRef, payload.event.myFiles, metadata).then((snapshot) => {
+                console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                console.log('File metadata:', snapshot.metadata);
+                getDownloadURL(snapshot.ref).then((url) => {
+                    eventGeneral.myFiles = url.toString();
+                });
+            }).catch((error) => {
+                console.error('Upload failed', error);
+            });
+
+            console.log(eventGeneral.myFiles);
+
             let createdBy = {
                 id: payload.user.id,
                 firstName: payload.user.firstName,
@@ -73,12 +103,12 @@ export default {
                     { merge: true }
                 )
                 .then(async () => {
+                    console.log(eventGeneral);
                     let generalEvent = {
-                        event: payload.event,
+                        event: eventGeneral,
                         createdBy: createdBy,
                         enrolls: [],
                     };
-
                     await db
                         .collection("GeneralEvent")
                         .doc(id)
@@ -96,13 +126,15 @@ export default {
 
         },
         async getGernralEvent(context: any, payload: any) {
+
             await db
                 .collection("GeneralEvent")
                 .doc(payload)
                 .get()
-                .then((snapshot: any) => {
+                .then((snapshot) => {
                     const document: any = snapshot.data();
                     context.commit("setGeneralEvent", document);
+
                 });
 
         },

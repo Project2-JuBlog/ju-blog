@@ -5,9 +5,16 @@
       <div class="">
         <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
 
-        <p class="text-center rounded-circle name-section p-1">
+        <p class="text-center rounded-circle name-section p-1" v-if="userInfo.file==''">
           {{ userInfo.firstName.charAt(0) }}
         </p>
+         <img
+          v-else
+          :src="userInfo.file"
+          class="rounded-circle img-profile"
+          width="60"
+          height="60"
+        />
       </div>
       <div class="py-1 mx-2 mt-2 w-100">
         <form>

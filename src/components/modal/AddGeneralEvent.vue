@@ -81,15 +81,17 @@
   </MDBModalBody>
   <MDBModalFooter class="btns">
     <button class="btn save" @click="$emit('close')">Close</button>
-    <MDBBtn class="btn colses" @click.prevent="eventHandler"
-      >Create Event</MDBBtn
-    >
+    <MDBBtn class="btn colses" @click.prevent="eventHandler">
+      <span v-if="!isLoading">Create Event</span>
+      <span v-else> <MDBSpinner /> </span
+    ></MDBBtn>
   </MDBModalFooter>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import vueFilePond from "vue-filepond";
 import firebase from "firebase/compat/app";
+
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -103,6 +105,7 @@ const FilePond: any = vueFilePond(
 export default defineComponent({
   data() {
     return {
+      isLoading: false,
       event: {
         title: "",
         type: "",
@@ -136,8 +139,9 @@ export default defineComponent({
       this.event.myFiles = event.target.files[0];
     },
     async eventHandler() {
-
+      this.isLoading = true;
       await this.AddGeneralEvent({ user: this.user, event: this.event });
+      this.isLoading = false;
       this.$emit("close");
       this.event.title = "";
       this.event.type = "";

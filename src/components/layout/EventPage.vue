@@ -4,7 +4,7 @@
   </div>
   <section v-else class="col-9 event px-2">
     <div class="event-img">
-      <img src="@/assets/img/cover.jpg" />
+      <img :src="generalEvent.event.myFiles" />
     </div>
     <div class="mt-3 event-detail">
       <div class="d-flex justify-content-between">

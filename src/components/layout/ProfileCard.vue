@@ -3,14 +3,22 @@
     <div class="card p-4">
       <router-link :to="'/home/profile/' + user?.id">
         <div
-          class="image d-flex flex-column justify-content-center align-items-center"
+          class="image d-flex flex-column justify-content-center pt-3 align-items-center"
         >
-          <button class="btn btn-secondary">
-            <!-- <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /> -->
-            <p class="text-center rounded-circle name-section p-1">
-              {{ user.firstName }}
-            </p>
-          </button>
+          <!-- <img src="https://i.imgur.com/wvxPV9S.png" height="100" width="100" /> -->
+          <p
+            class="text-center rounded-circle name-section p-1"
+            v-if="user.file == ''"
+          >
+            {{ user.firstName }}
+          </p>
+          <img
+            v-else
+            :src="user.file"
+            class="rounded-circle img-profile"
+            width="80"
+            height="80"
+          />
           <span class="name mt-3"
             >{{ user.firstName }} {{ user.lastName }}</span
           >
@@ -71,7 +79,7 @@ body {
 }
 
 .card:hover .image img {
-  transform: scale(1.5);
+  transform: scale(1.3);
 }
 
 .btn {
@@ -97,12 +105,6 @@ body {
 .number {
   font-size: 22px;
   font-weight: bold;
-}
-
-.follow {
-  font-size: 12px;
-  font-weight: 500;
-  color: #444444;
 }
 
 .btn1 {

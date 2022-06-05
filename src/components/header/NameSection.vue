@@ -1,8 +1,14 @@
 <template>
   <BaseCard class="name-section">
     <router-link :to="'/home/profile/' + user.id" active-class="active-list">
-      <!-- <img :src="require('@/assets/img/' + user.file)" width="40" height="40" /> -->
-      <strong class="header-black px-3">{{ userName }}</strong>
+      <img
+        v-if="user.file"
+        :src="user.file"
+        class="rounded-circle img-profile"
+        width="40"
+        height="40"
+      />
+      <strong class="header-black ps-3">{{ userName }}</strong>
     </router-link>
   </BaseCard>
 </template>

@@ -29,9 +29,19 @@
       class="name-post pt-0 mt-0 d-flex align-items-center gap-2 border-bottom pb-3"
     >
       <router-link :to="'/home/profile/' + posts?.user?.id">
-        <p class="text-center rounded-circle name-section p-1 m-0">
+        <p
+          class="text-center rounded-circle name-section p-1 m-0"
+          v-if="posts.user.file == ''"
+        >
           {{ posts.user.fname.charAt(0) }}
         </p>
+        <img
+          v-else
+          :src="posts.user.file"
+          class="rounded-circle img-profile"
+          width="60"
+          height="60"
+        />
       </router-link>
       <div>
         <div>
@@ -92,7 +102,8 @@
   >
     <ListLike
       :likes="posts.likes"
-      title="People Who Applied" noList="No one Applied Your Job"
+      title="People Who Applied"
+      noList="No one Applied Your Job"
       @close="islikesOpen = false"
     />
   </MDBModal>

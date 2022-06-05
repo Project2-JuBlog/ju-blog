@@ -112,7 +112,7 @@ export default {
           user: {
             fname: payload.userInfo.firstName,
             id: payload.userInfo.id,
-            image: "",
+            file: payload.userInfo.file,
             lname: payload.userInfo.lastName,
           },
         };
@@ -129,7 +129,7 @@ export default {
           user: {
             fname: payload.userInfo.firstName,
             id: payload.userInfo.id,
-            image: "",
+            file: payload.userInfo.file,
             lname: payload.userInfo.lastName,
           },
         };

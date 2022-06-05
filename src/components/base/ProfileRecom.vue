@@ -6,15 +6,19 @@
       :key="recomandation.name"
     >
       <div class="col-2">
-        <p class="text-center rounded-circle name-sections p-1">
+        <p
+          class="text-center rounded-circle name-sections p-1"
+          v-if="(recomandation.RecommandBy.file = '')"
+        >
           {{ recomandation.RecommandBy.firstName.charAt(0) }}
         </p>
-        <!-- <img
-          :src="recomandation.img"
-          class="recomandation-img"
+        <img
+          v-else
+          :src="recomandation.RecommandBy.file"
+          class="rounded-circle img-profile"
           width="120"
           height="120"
-        /> -->
+        />
       </div>
       <div class="col-10">
         <p class="recomandation-name px-3 mt-2">

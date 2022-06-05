@@ -9,11 +9,21 @@
         class="d-flex w-100 align-items-center"
         :key="like.id"
       >
-        <p class="text-center rounded-circle name-sections p-1">
+        <p
+          class="text-center rounded-circle name-sections p-1"
+          v-if="like.file == ''"
+        >
           <router-link :to="'/home/profile/' + like.id">
             {{ like.firstName }}
           </router-link>
         </p>
+        <img
+          v-else
+          :src="like.file"
+          class="rounded-circle img-profile"
+          width="60"
+          height="60"
+        />
         <router-link :to="'/home/profile/' + like.id">
           <p class="px-2">{{ like.firstName }} {{ like.lastName }}</p>
         </router-link>

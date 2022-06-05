@@ -5,9 +5,19 @@
   <div class="profile" v-else>
     <section class="row profile-header border-bottom border-2 py-3">
       <div class="col-3">
-        <p class="text-center rounded-circle name-section p-1">
+        <p
+          class="text-center rounded-circle name-section p-1"
+          v-if="userData.file == ''"
+        >
           {{ userData.firstName }}
         </p>
+        <img
+          v-else
+          :src="userData.file"
+          class="rounded-circle img-profile"
+          width="150"
+          height="150"
+        />
       </div>
       <div class="col-7 profile-header-detail">
         <div class="d-flex justify-content-between">
@@ -192,6 +202,10 @@ export default defineComponent({
 </script>
 <style lang="scss">
 @import "@/assets/sass/main";
+.img-profile {
+  object-fit: cover;
+  object-position: top;
+}
 .profile {
   &-header {
     &-detail {

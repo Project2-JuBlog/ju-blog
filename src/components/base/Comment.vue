@@ -3,9 +3,19 @@
     <div>
       <router-link :to="'/home/profile/' + comment.user.id">
         <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
-        <p class="text-center rounded-circle name-section p-1">
+        <p
+          class="text-center rounded-circle name-section p-1"
+          v-if="comment.user.file == ''"
+        >
           {{ comment.user.fname.charAt(0) }}
         </p>
+        <img
+          v-else
+          :src="comment.user.file"
+          class="rounded-circle img-profile"
+          width="60"
+          height="60"
+        />
       </router-link>
     </div>
     <div class="w-100">

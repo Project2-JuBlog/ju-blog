@@ -10,9 +10,18 @@
           <div class="col-sm-2 col-xl-1 col-12">
             <router-link :to="'/home/profile/' + i.id">
               <!-- <img src="@/assets/img/rawanimage.png" width="55" height="55" /> -->
-              <p class="text-center rounded-circle name-sections p-1">
+              <p
+                class="text-center rounded-circle name-sections p-1"
+                v-if="i.file == ''"
+              >
                 {{ i.fname }}
               </p>
+              <img
+                :src="i.file"
+                class="rounded-circle img-profile"
+                width="50"
+                height="50"
+              />
             </router-link>
           </div>
           <div
@@ -50,9 +59,19 @@
           <div class="col-sm-2 col-xl-1 col-12">
             <router-link :to="'/home/profile/' + i.id">
               <!-- <img src="@/assets/img/rawanimage.png" width="55" height="55" /> -->
-              <p class="text-center rounded-circle name-sections p-1">
+              <p
+                class="text-center rounded-circle name-sections p-1"
+                v-if="i.file == ''"
+              >
                 {{ i.fname }}
               </p>
+              <img
+                v-else
+                :src="i.file"
+                class="rounded-circle img-profile"
+                width="50"
+                height="50"
+              />
             </router-link>
           </div>
           <div
