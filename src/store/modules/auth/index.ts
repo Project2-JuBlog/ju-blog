@@ -23,6 +23,7 @@ export default {
             status: "",
             acadYear: "",
         },
+        error: ""
     },
     getters: {
         user(state: any) {
@@ -40,6 +41,9 @@ export default {
         },
         userGroup(state: any) {
             return state.userInfo.groups;
+        },
+        error(state: any) {
+            return state.error
         }
     },
     mutations: {
@@ -198,8 +202,10 @@ export default {
             })
 
 
+        },
+        setError(state: any, payload: any) {
+            state.error = payload
         }
-
     },
     actions: {
         getUser(context: any, payload: any) {
@@ -234,31 +240,38 @@ export default {
                 url =
                     "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBnBaHK8T68A0HUD1tYaJBJFU_8tPjuTBk";
             }
+            try {
+                const login = await axios.post(url, {
+                    email: payload.email,
+                    password: payload.password,
+                    returnSecureToken: true,
+                })
 
-            const login = await axios.post(url, {
-                email: payload.email,
-                password: payload.password,
-                returnSecureToken: true,
-            });
+                const expiresIn = +login.data.expiresIn * 1000;
+                const expirestionDate = new Date().getTime() + expiresIn;
+                localStorage.setItem('token', login.data.idToken);
+                localStorage.setItem('userId', login.data.localId);
+                localStorage.setItem('tokenExpiration', expirestionDate.toString());
+                timer = setTimeout(() => {
+                    context.dispatch('logOut');
+                }, expiresIn)
 
+                context.commit("setUser", {
+                    userId: login.data.localId,
+                    token: login.data.idToken,
+                    tokenExpiration: expirestionDate,
+                });
+                if (mode !== "signup") {
+                    router.push({ name: "Feed", params: { id: login.data.localId } });
 
-            const expiresIn = +login.data.expiresIn * 1000;
-            const expirestionDate = new Date().getTime() + expiresIn;
-            localStorage.setItem('token', login.data.idToken);
-            localStorage.setItem('userId', login.data.localId);
-            localStorage.setItem('tokenExpiration', expirestionDate.toString());
-            timer = setTimeout(() => {
-                context.dispatch('logOut');
-            }, expiresIn)
+                }
+                else {
+                    router.push({ name: "Feed", params: { id: login.data.localId } });
 
-            context.commit("setUser", {
-                userId: login.data.localId,
-                token: login.data.idToken,
-                tokenExpiration: expirestionDate,
-            });
-            if (mode !== "signup") {
-                router.push({ name: "Feed", params: { id: login.data.localId } });
-
+                }
+            }
+            catch {
+                context.commit("setError", "Your Password Or Email is Invalid")
             }
         },
         tryLogin(context: any) {

@@ -5,10 +5,13 @@
       <div class="">
         <!-- <img src="@/assets/img/rawanimage.png" width="45" height="45" /> -->
 
-        <p class="text-center rounded-circle name-section p-1" v-if="userInfo.file==''">
+        <p
+          class="text-center rounded-circle name-section p-1"
+          v-if="userInfo.file == ''"
+        >
           {{ userInfo.firstName.charAt(0) }}
         </p>
-         <img
+        <img
           v-else
           :src="userInfo.file"
           class="rounded-circle img-profile"
@@ -26,7 +29,11 @@
           ></textarea>
         </form>
       </div>
-      <div class="align-self-center cursor mx-2" @click.prevent="CreateComment">
+      <div
+        v-if="newComment"
+        class="align-self-center cursor mx-2"
+        @click.prevent="CreateComment"
+      >
         <img src="@/assets/img/arrow.svg" width="25" height="25" />
       </div>
     </div>

@@ -13,7 +13,7 @@
       v-model="password"
     />
   </form>
-
+  <p class="text-danger">{{ error }}</p>
   <BaseButton @click.prevent="submitForm" small class="mt-3">
     <span v-if="!isLoading">Log In </span>
     <span v-else> <MDBSpinner /> </span
@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default defineComponent({
   data() {
@@ -31,6 +31,9 @@ export default defineComponent({
       email: "",
       password: "",
     };
+  },
+  computed: {
+    ...mapGetters({ error: "Auth/error" }),
   },
   methods: {
     ...mapActions({

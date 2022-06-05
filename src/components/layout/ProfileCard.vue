@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4 mb-4 d-flex justify-content-center">
-    <div class="card p-4">
+    <div class="card p-4 border">
       <router-link :to="'/home/profile/' + user?.id">
         <div
           class="image d-flex flex-column justify-content-center pt-3 align-items-center"
@@ -10,7 +10,7 @@
             class="text-center rounded-circle name-section p-1"
             v-if="user.file == ''"
           >
-            {{ user.firstName }}
+            {{ user.firstName.charAt(0) }}
           </p>
           <img
             v-else
@@ -139,5 +139,19 @@ hr .new1 {
 
 .date {
   background-color: #ccc;
+}
+.name-section {
+  color: white;
+  background-color: $color-button;
+  width: 80px;
+  height: 80px;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  word-break: break-all;
+  text-decoration: none;
+  text-transform: capitalize;
 }
 </style>

@@ -48,7 +48,11 @@
         </div>
       </div>
       <div>
-        <button class="btns-save rounded-pill" @click.prevent="createPost()">
+        <button
+          class="btns-save rounded-pill"
+          :disabled="content.length == 0"
+          @click.prevent="createPost()"
+        >
           Post
         </button>
       </div>

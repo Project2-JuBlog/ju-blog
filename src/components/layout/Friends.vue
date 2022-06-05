@@ -17,6 +17,7 @@
                 {{ i.fname }}
               </p>
               <img
+                v-else
                 :src="i.file"
                 class="rounded-circle img-profile"
                 width="50"
