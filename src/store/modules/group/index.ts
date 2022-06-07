@@ -1,6 +1,9 @@
 import axios from "../../../axios";
 import router from "../../../router";
 import db from "../../../firebase";
+import firebase from "firebase/compat/app";
+
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default {
   namespaced: true,
@@ -10,6 +13,7 @@ export default {
     collage: [],
     major: [],
     savedpost: [],
+    loading: false
   },
   getters: {
     groups(state: any) {
@@ -27,6 +31,8 @@ export default {
     savedpost(state: any) {
       return state.savedpost;
     },
+
+    loading(state: any) { return state.loading }
   },
   mutations: {
     setGroup(state: any, payload: any) {
@@ -39,10 +45,7 @@ export default {
       state.major = payload;
     },
     async Addpost(state: any, payload: any) {
-      const posts = state.group.posts;
       let id = "_" + Math.random().toString(36).substr(2, 9);
-      console.log(payload);
-
       let newPost = {
         groupId: state.group.id,
         content: payload.content,
@@ -58,15 +61,34 @@ export default {
           status: payload.userInfo.role == 'student' ? payload.userInfo.status : payload.userInfo.role,
         },
       };
-
-      console.log(newPost);
-
-      posts.push(newPost);
-
+      console.log(payload.files.name);
+      if (payload.files.length !== 0) {
+        console.log("GD");
+        const metadata = {
+          contentType: payload.files.type,
+        };
+        const storage = getStorage();
+        const imageRef = ref(storage, 'images/' + payload.files.name);
+        await uploadBytesResumable(imageRef, payload.files, metadata).then(async (snapshot) => {
+          await getDownloadURL(snapshot.ref).then((url) => {
+            console.log('File metadata:', snapshot.metadata);
+            let file: any = {
+              url: url.toString(),
+              type: snapshot.metadata.contentType,
+              name: snapshot.metadata.name
+            }
+            newPost.file = file;
+            console.log(file);
+          });
+        });
+      }
       await db
         .collection("groups")
         .doc(payload.groupId.toString())
-        .update({ posts: posts });
+        .update({
+          posts: firebase.firestore.FieldValue.arrayUnion(newPost)
+        });
+      await state.group.posts.push(newPost)
     },
 
     async AddJobpost(state: any, payload: any) {
@@ -96,9 +118,6 @@ export default {
         .doc(state.group.id)
         .update({ posts: posts });
     },
-
-
-
     async AddComment(state: any, payload: any) {
       let id = "_" + Math.random().toString(36).substr(2, 9);
 
@@ -143,6 +162,7 @@ export default {
     async savedPost(state: any, payload: any) {
       state.savedpost = payload;
     },
+    loadingS(state: any, payload: any) { state.loading = payload }
   },
   actions: {
     async getGroup(context: any, payload: any) {
@@ -181,7 +201,10 @@ export default {
         });
     },
     async Addpost(context: any, payload: any) {
-      context.commit("Addpost", payload);
+      context.commit('loadingS', true);
+      await context.commit("Addpost", payload);
+      context.commit('loadingS', false);
+
     },
     async Addjobpost(context: any, payload: any) {
       context.commit("AddJobpost", payload);

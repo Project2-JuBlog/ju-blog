@@ -34,7 +34,7 @@ export default {
                 gradYear: userdata.role == 'student' ? userdata.gradYear : "",
                 status: userdata.role == 'student' ? userdata.status : "",
                 acadYear: userdata.role == 'student' ? userdata.acadYear : "",
-                file: userdata.file,
+                file: payload.info.myFiles,
                 Certificate: payload.info.certificate,
                 experiense: payload.info.experience,
                 languages: payload.info.language,
@@ -55,6 +55,28 @@ export default {
                 getDownloadURL(snapshot.ref).then((url) => {
                     newProfileInfor.file = url.toString();
                     console.log(newProfileInfor.file);
+
+                });
+            }).catch((error) => {
+                console.error('Upload failed', error);
+            });
+
+            const metadata1 = {
+                contentType: payload.info.certificate.type,
+            };
+            const storage1 = getStorage();
+            const imageRef1 = ref(storage1, 'images/' + payload.info.certificate.name);
+            await uploadBytesResumable(imageRef1, payload.info.certificate, metadata1).then(async (snapshot) => {
+                console.log('Uploaded', snapshot.totalBytes, 'bytes.');
+                console.log('File metadata:', snapshot.metadata);
+                await getDownloadURL(snapshot.ref).then((url1) => {
+                    let data: any = {
+                        url: url1.toString(),
+                        type: snapshot.metadata.contentType,
+                        name: snapshot.metadata.name
+                    }
+                    newProfileInfor.Certificate = data;
+                    console.log(newProfileInfor.Certificate);
 
                 });
             }).catch((error) => {

@@ -61,6 +61,60 @@
         <p>
           {{ post.content }}
         </p>
+        <div v-if="post.file !== ''">
+          <div
+            v-if="post.file.type.substring(0, 5) == 'image'"
+            class="post-body-image"
+          >
+            <img :src="post.file.url" />
+          </div>
+          <div v-else>
+            <div @click.prevent="openFile(post.file.url)">
+              <div class="file" role="button">
+                <div class="overlay-file"></div>
+                <iframe
+                  :src="post.file.url"
+                  seamless="seamless"
+                  scrolling="no"
+                  class="file-container"
+                ></iframe>
+                <div class="text-overlay">
+                  <img
+                    class="file-icon mx-2 my-2"
+                    src="@/assets/img/PDF.svg"
+                    alt="file"
+                    width="23"
+                    height="23"
+                  />
+                  <p class="pre-wrap text-center mt-1">
+                    {{ post.file.name }}
+                  </p>
+                </div>
+                <div class="back-overlay">
+                  <div class="d-flex">
+                    <img
+                      class="file-icon mx-2 my-2"
+                      src="@/assets/img/PDF.svg"
+                      alt="file"
+                      width="23"
+                      height="23"
+                    />
+                    <p class="text-center mt-1">
+                      {{ post.file.name }}
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-center mt-4">
+                    <img
+                      src="@/assets/img/download-file.svg"
+                      width="30"
+                      height="30"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Post Footer -->
@@ -182,7 +236,9 @@ export default defineComponent({
       removelikePost: "Group/removelikePost",
       getGroup: "Group/getGroup",
     }),
-
+    openFile(link: any) {
+      window.open(link, "_blank");
+    },
     async LikePost() {
       await this.getGroup(this.post.groupId);
       if (this.isLiked == false) {
@@ -280,6 +336,17 @@ export default defineComponent({
   &-like {
     cursor: pointer;
   }
+  &-body {
+    &-image {
+      height: 320px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+    }
+  }
 }
 
 .slide-enter-active {
@@ -300,5 +367,82 @@ export default defineComponent({
     text-decoration: none;
     color: $color-black;
   }
+}
+.file-container {
+  overflow: hidden;
+  width: 250px;
+  height: 100%;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+}
+iframe {
+  overflow: hidden;
+}
+.file {
+  position: relative;
+  width: 250px;
+  height: 100%;
+
+  overflow: hidden;
+}
+.text-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+  p {
+    color: #777;
+    white-space: nowrap;
+    max-width: 80%;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+}
+
+.back-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+  p {
+    color: #777;
+    white-space: nowrap;
+    max-width: 80%;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+}
+.overlay-file {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.file:hover .back-overlay {
+  display: block;
+}
+.file:hover .overlay-file {
+  background-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.73),
+    rgba(245, 246, 252, 0.295)
+  );
+}
+.file:hover .text-overlay {
+  display: none;
 }
 </style>

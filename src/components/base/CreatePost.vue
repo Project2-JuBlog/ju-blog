@@ -28,17 +28,42 @@
         </form>
       </div>
     </div>
+    <div class="mt-3" v-if="imageSelect">
+      <file-pond
+        name="test"
+        ref="pond"
+        class="file-pond"
+        class-name="my-pond"
+        label-idle="Select Your Image"
+        accepted-file-types="image/jpeg, image/png,image/gif,image/jpg"
+        :allow-multiple="false"
+        @change="handleFilePondInit"
+      />
+    </div>
+    <div class="mt-3" v-if="fileSelect">
+      <file-pond
+        name="test"
+        ref="pond"
+        class="file-pond"
+        class-name="my-pond"
+        label-idle="Select Your Files"
+        accepted-file-types="application/pdf,application/doc, .docx,"
+        :allow-multiple="false"
+        @change="handleFilePondInit"
+      />
+    </div>
     <div class="d-flex justify-content-between">
       <div class="d-flex gap-5">
-        <div>
+        <div @click.prevent="imageSelect = true">
           <img
+            role="button"
             src="@/assets/img/uploadeimg.svg"
             width="30"
             height="30"
             class="mx-2"
           />Photo
         </div>
-        <div>
+        <div @click.prevent="fileSelect = true">
           <img
             src="@/assets/img/uploadeFile.svg"
             width="30"
@@ -53,7 +78,8 @@
           :disabled="content.length == 0"
           @click.prevent="createPost()"
         >
-          Post
+          <span v-if="loading"> <MDBSpinner /> </span>
+          <span v-else>Post</span>
         </button>
       </div>
     </div>
@@ -62,32 +88,60 @@
 <script>
 import { defineComponent } from "vue";
 import { mapActions, mapGetters } from "vuex";
+import vueFilePond from "vue-filepond";
+
+import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+);
 
 export default defineComponent({
   props: ["groupId", "postId"],
   data() {
-    return { content: "" };
+    return {
+      content: "",
+      myFiles: [],
+      imageSelect: false,
+      fileSelect: false,
+      isLoading: false,
+    };
   },
   computed: {
     ...mapGetters({
       userInfo: "Auth/userInfo",
+      loading: "Group/loading",
     }),
+  },
+  components: {
+    FilePond,
   },
   methods: {
     ...mapActions({
       Addpost: "Group/Addpost",
     }),
+    handleFilePondInit(event) {
+      this.myFiles = event.target.files[0];
+    },
     async createPost() {
+      this.isLoading = true;
       let date = new Date();
-
       await this.Addpost({
         groupId: this.groupId,
         postId: this.postId,
         content: this.content,
+        files: this.myFiles,
         createdAt: date,
         userInfo: this.userInfo,
       });
+      // location.reload();
       this.content = "";
+      this.myFiles = [];
+      this.imageSelect = false;
+      this.isLoading = false;
     },
   },
 });

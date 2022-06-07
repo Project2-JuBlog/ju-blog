@@ -223,10 +223,7 @@ export default defineComponent({
       this.volunteerCounter--;
     },
     handleFileCoverImagePondInit(event: any) {
-      for (var i = 0; i < event.target.files.length; i++) {
-        this.file = event.target.files[i];
-        this.Info.certificate.push(this.file);
-      }
+      this.Info.certificate = event.target.files[0];
     },
   },
 });
