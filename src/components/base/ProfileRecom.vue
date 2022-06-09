@@ -8,7 +8,7 @@
       <div class="col-2">
         <p
           class="text-center rounded-circle name-sections p-1"
-          v-if="(recomandation.RecommandBy.file = '')"
+          v-if="recomandation.RecommandBy.file == ''"
         >
           {{ recomandation.RecommandBy.firstName.charAt(0) }}
         </p>

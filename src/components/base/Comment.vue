@@ -23,7 +23,7 @@
         <p class="col-11">
           {{ comment.content }}
         </p>
-        <div class="dropdown col-1 mt-2">
+        <!-- <div class="dropdown col-1 mt-2">
           <div
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -31,15 +31,15 @@
             style="cursor: pointer"
           >
             <img src="@/assets/img/dots.svg" width="10" height="4" />
-          </div>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          </div> -->
+        <!-- <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
               <a class="dropdown-item" href="#" @click.prevent="deletsComment"
                 >Delete</a
               >
             </li>
-          </ul>
-        </div>
+          </ul> -->
+        <!-- </div> -->
       </div>
       <div class="mx-3 cursor" @click="isLiked = !isLiked">
         <span v-if="!isLiked">like</span>

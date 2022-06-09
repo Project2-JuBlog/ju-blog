@@ -21,21 +21,26 @@ export default {
     actions: {
         async getGroupPost(context: any, payload: any) {
             let postFeed = [] as any;
-            await payload.groups.map((group: any) => {
+            console.log(payload);
+
+            await payload?.groups?.map((group: any) => {
 
                 db.collection("groups")
                     .doc(group.id)
                     .get()
                     .then((snapshot: any) => {
                         const document: any = snapshot.data();
-                        let post: any = document.posts;
-                        if (post.length > 3) {
-                            for (let i = 0; i < 3; i++) {
-                                const random = Math.floor(Math.random() * post.length);
-                                postFeed.push(post[random]);
 
-                                context.commit("setGroupPost", postFeed);
-                            }
+                        let post: any = document.posts;
+                        console.log("immm");
+
+                        for (let i = 0; i < 3; i++) {
+                            const random = Math.floor(Math.random() * post.length);
+                            postFeed.push(post[random]);
+                            console.log(postFeed);
+
+                            context.commit("setGroupPost", postFeed);
+
                         }
                     });
             });

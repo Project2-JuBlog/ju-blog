@@ -266,6 +266,8 @@ export default {
 
                 }
                 else {
+
+
                     router.push({ name: "Feed", params: { id: login.data.localId } });
 
                 }

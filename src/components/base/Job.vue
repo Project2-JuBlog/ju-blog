@@ -28,21 +28,11 @@
     <div
       class="name-post pt-0 mt-0 d-flex align-items-center gap-2 border-bottom pb-3"
     >
-      <router-link :to="'/home/profile/' + posts?.user?.id">
-        <p
-          class="text-center rounded-circle name-section p-1 m-0"
-          v-if="posts.user.file == ''"
-        >
+      <!-- <router-link :to="'/home/profile/' + posts?.user?.id">
+        <p class="text-center rounded-circle name-section p-1 m-0">
           {{ posts.user.fname.charAt(0) }}
         </p>
-        <img
-          v-else
-          :src="posts.user.file"
-          class="rounded-circle img-profile"
-          width="60"
-          height="60"
-        />
-      </router-link>
+      </router-link> -->
       <div>
         <div>
           <h3 class="post-job-title text-capitalize">{{ posts.user.fname }}</h3>
@@ -83,7 +73,9 @@
           View All Application
         </button>
         <button
-          v-if="user.id !== posts.user.id && !isLiked"
+          v-if="
+            user.id !== posts.user.id && !isLiked && user.role !== 'company'
+          "
           class="button-job"
           @click.prevent="applyJob(posts.groupId, posts.id)"
         >
