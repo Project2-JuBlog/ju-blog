@@ -5,7 +5,7 @@
       <div class="col-12 col-lg-6 col-xl-3">
         <SideNav />
       </div>
-      <div class="col-12 col-lg-6">
+      <div class="col-12 col-lg-6 py-5 py-lg-0">
         <section class="px-2 px-md-0 mx-2 mx-md-0">
           <router-view></router-view>
         </section>
